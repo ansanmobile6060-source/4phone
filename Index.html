@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>통신3사 요금 상담</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F6F5; --panel:#FFFFFF; --ink:#16211D; --sub:#5B6A64; --line:#DCE3E0; --soft:#E9EFEC;
+  --brand:#0E8C7B; --brand-ink:#FFFFFF; --warn:#B4361E; --hl:#FFF4C2;
+  --skt:#E8541B; --kt:#1E1E1E; --kt2:#E60012; --lgu:#D6006F;
+  --skt-bg:#FDEEE6; --kt-bg:#ECECEC; --lgu-bg:#FBE5F0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101614; --panel:#18201D; --ink:#E6EEEA; --sub:#9AABA4; --line:#2B3632; --soft:#202A26;
+    --brand:#3CC4AF; --brand-ink:#0B1412; --warn:#FF8A6E; --hl:#3A3415;
+    --skt:#FF7A45; --kt:#E8E8E8; --kt2:#FF4B55; --lgu:#FF4FA6;
+    --skt-bg:#3A2219; --kt-bg:#2A2A2A; --lgu-bg:#3A1A2B;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101614; --panel:#18201D; --ink:#E6EEEA; --sub:#9AABA4; --line:#2B3632; --soft:#202A26;
+  --brand:#3CC4AF; --brand-ink:#0B1412; --warn:#FF8A6E; --hl:#3A3415;
+  --skt:#FF7A45; --kt:#E8E8E8; --kt2:#FF4B55; --lgu:#FF4FA6;
+  --skt-bg:#3A2219; --kt-bg:#2A2A2A; --lgu-bg:#3A1A2B;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--panel);border-bottom:1px solid var(--line)}
+.top{max-width:1180px;margin:0 auto;padding:14px 20px 0;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.top h1{font-size:20px;margin:0;font-weight:700;letter-spacing:-.02em}
+.top .date{color:var(--sub);font-size:13px}
+nav{max-width:1180px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto}
+nav button{border:0;background:none;color:var(--sub);font:inherit;font-weight:600;padding:12px 12px 11px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--brand)}
+nav button:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+main{max-width:1180px;margin:0 auto;padding:20px}
+section[hidden]{display:none}
+h2{font-size:18px;margin:0 0 4px;letter-spacing:-.01em}
+.lead{color:var(--sub);margin:0 0 16px;font-size:14px;max-width:70ch}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+select,input[type=number],input[type=text]{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:7px 8px;min-height:38px;max-width:100%}
+input[type=number]{width:110px;text-align:right}
+.btn{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:8px 14px;cursor:pointer;min-height:38px}
+.btn.primary{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.btn.ghost{border-color:transparent;color:var(--sub)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);font-weight:600;white-space:nowrap;background:var(--soft);position:sticky;top:0}
+td.r,th.r{text-align:right}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 7px;border-radius:4px;white-space:nowrap}
+.c-SKT{color:var(--skt)} .c-KT{color:var(--kt2)} .c-LGU{color:var(--lgu)}
+.b-SKT{background:var(--skt-bg);color:var(--skt)} .b-KT{background:var(--kt-bg);color:var(--kt)} .b-LGU{background:var(--lgu-bg);color:var(--lgu)}
+.warn{color:var(--warn)}
+.muted{color:var(--sub);font-size:13px}
+.chk{color:var(--sub);font-size:12px;border:1px dashed var(--line);border-radius:4px;padding:0 5px;margin-left:4px;white-space:nowrap}
+
+/* 3사 비교: the memorable element */
+.lines{display:grid;gap:8px}
+.line{display:grid;grid-template-columns:70px 1fr 1fr auto;gap:8px;align-items:center}
+.line .lab{font-weight:600;color:var(--sub)}
+@media (max-width:640px){.line{grid-template-columns:1fr 1fr}.line .lab{grid-column:1/-1}}
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:18px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+@media (max-width:860px){.board{grid-template-columns:1fr}}
+.col{padding:18px 18px 16px;border-right:1px solid var(--line);position:relative;display:flex;flex-direction:column}
+.col:last-child{border-right:0}
+@media (max-width:860px){.col{border-right:0;border-bottom:1px solid var(--line)}.col:last-child{border-bottom:0}}
+.col .bar{position:absolute;left:0;right:0;top:0;height:5px}
+.col.SKT .bar{background:var(--skt)} .col.KT .bar{background:linear-gradient(90deg,var(--kt) 70%,var(--kt2) 70%)} .col.LGU .bar{background:var(--lgu)}
+.col h3{margin:4px 0 2px;font-size:17px}
+.total{font-size:40px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:8px 0 2px}
+.total small{font-size:16px;font-weight:600;margin-left:2px}
+.col.best{background:linear-gradient(var(--hl),var(--hl)) top/100% 0 no-repeat}
+.best-flag{display:none;font-size:12.5px;font-weight:700;color:var(--brand);margin-top:2px}
+.col.best .best-flag{display:block}
+.plist{list-style:none;padding:0;margin:12px 0 10px;display:grid;gap:8px;flex:1}
+.plist li{border-top:1px solid var(--line);padding-top:8px;font-size:13.5px}
+.plist b{font-weight:600}
+.diff{font-size:13px;color:var(--sub)}
+.combo{display:flex;align-items:center;gap:8px;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;font-size:13px}
+.combo input{width:100px}
+
+.fam .frow{display:grid;grid-template-columns:28px 92px 1.4fr 110px 80px 110px 120px 32px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.fam .fhead{font-size:12.5px;color:var(--sub);font-weight:600;border-bottom:1px solid var(--line)}
+@media (max-width:860px){.fam .fhead{display:none}.fam .frow{grid-template-columns:1fr 1fr}.fam .frow>*:first-child{grid-column:1/-1;font-weight:700}}
+.sumbox{display:flex;gap:24px;flex-wrap:wrap;margin-top:14px;align-items:flex-end}
+.sumbox .big{font-size:30px;font-weight:700;letter-spacing:-.02em}
+textarea{width:100%;min-height:150px;font:inherit;font-size:13.5px;border:1px solid var(--line);border-radius:6px;padding:10px;background:var(--soft);color:var(--ink)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.seg button{font:inherit;font-size:14px;border:0;background:var(--panel);color:var(--sub);padding:7px 12px;cursor:pointer;font-weight:600}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.notes{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.notes ul{margin:8px 0 0;padding-left:18px}
+.notes li{margin-bottom:6px;font-size:14px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+
+/* 휴대폰 구매 */
+.carriers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.carriers button{font:inherit;font-size:18px;font-weight:700;padding:16px 10px;border-radius:10px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.carriers button[aria-pressed="true"].SKT{border-color:var(--skt);background:var(--skt-bg);color:var(--skt)}
+.carriers button[aria-pressed="true"].KT{border-color:var(--kt2);background:var(--kt-bg);color:var(--kt)}
+.carriers button[aria-pressed="true"].LGU{border-color:var(--lgu);background:var(--lgu-bg);color:var(--lgu)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--sub);font-weight:600}
+.field select,.field input{width:100%;color:var(--ink);font-weight:400}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.step{font-size:15px;font-weight:700;margin:0 0 10px}
+.plancard{border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--sub);margin-top:6px;min-height:44px}
+.plancard b{color:var(--ink)}
+.result{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel);margin-top:16px}
+@media (max-width:760px){.result{grid-template-columns:1fr}}
+.rcol{padding:18px;border-right:1px solid var(--line)}
+.rcol:last-child{border-right:0}
+@media (max-width:760px){.rcol{border-right:0;border-bottom:1px solid var(--line)}.rcol:last-child{border-bottom:0}}
+.rcol.win{background:var(--hl)}
+.rcol h3{margin:0;font-size:17px}
+.rcol .win-flag{display:none;color:var(--brand);font-weight:700;font-size:13px}
+.rcol.win .win-flag{display:inline}
+.phase{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.phase .when{grid-column:1/-1;font-size:13px;color:var(--sub);font-weight:600}
+.phase .amt{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.15;grid-column:1/-1}
+.phase .amt small{font-size:15px;font-weight:600}
+.brk{grid-column:1/-1;font-size:13px;color:var(--sub);display:grid;grid-template-columns:1fr auto;gap:1px 12px}
+.brk span:nth-child(even){text-align:right;font-variant-numeric:tabular-nums}
+.sum24{margin-top:14px;padding-top:12px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline;font-weight:700}
+.sum24 .v{font-size:20px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:20;display:flex;align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.modal[hidden]{display:none}
+.mbox{background:var(--panel);border-radius:12px;padding:16px;width:min(560px,100%);max-height:100%;display:flex;flex-direction:column}
+.mimg{overflow:auto;border:1px solid var(--line);border-radius:8px;background:#fff;flex:1;min-height:0}
+.mimg img{display:block;width:100%;height:auto}
+.subhead{font-size:13px;color:var(--sub);font-weight:600;margin:14px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{font:inherit;font-size:13.5px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.print-only{display:none}
+@media print{
+  @page{size:A4;margin:8mm}
+  :root,:root[data-theme="dark"]{--bg:#fff;--panel:#fff;--ink:#111;--sub:#444;--line:#bbb;--soft:#f2f2f2;--brand:#0E8C7B;--brand-ink:#fff;--hl:#FFF4C2}
+  html,body{background:#fff!important;padding:0!important;height:auto}
+  :root{padding:0!important}
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  header,nav,.toast,.modal,.combo-list,#bSubHint,.no-print,button,.btn,textarea,#sMsg,#bWarn,.lead,main>section:not(#buy){display:none!important}
+  main{max-width:none;padding:0}
+  #buy{zoom:.56}
+  #buy p.muted{display:none}
+  .step{margin-bottom:6px}
+  #buy h2{font-size:20px}
+  .panel{break-inside:avoid;padding:10px 12px;border-color:#999}
+  .result{break-inside:avoid;margin-top:10px}
+  .carriers button[aria-pressed="false"]{display:none!important}
+  .carriers{grid-template-columns:1fr;max-width:220px}
+  .carriers button[aria-pressed="true"],.seg button[aria-pressed="true"],.chips button[aria-pressed="true"]{display:inline-block!important}
+  .seg,.chips{border:0}
+  .seg button[aria-pressed="false"],.chips button[aria-pressed="false"]{display:none!important}
+  input,select{border:0!important;border-bottom:1px solid #999!important;border-radius:0!important;background:transparent!important;-webkit-appearance:none;appearance:none;padding:2px 0!important;min-height:0!important}
+  .print-only{display:block}
+  .print-head{display:flex!important;justify-content:space-between;align-items:baseline;border-bottom:3px solid #0E8C7B;padding-bottom:6px;margin-bottom:10px;font-size:22px}
+  .print-head span{font-size:14px}
+  .sign{margin-top:14px;border:2px solid #333;border-radius:8px;padding:12px 14px;font-size:15px;break-inside:avoid}
+  .sign-row{display:flex;justify-content:space-between;gap:12px;margin:16px 0 10px;flex-wrap:wrap}
+  .consent{font-weight:600}
+}
+.combo-box{position:relative}
+.combo-list{position:absolute;left:0;right:0;top:66px;z-index:6;background:var(--panel);border:1px solid var(--line);border-radius:8px;margin:0;padding:4px;list-style:none;max-height:300px;overflow:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.combo-list li{padding:9px 10px;border-radius:6px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;color:var(--ink);font-weight:500}
+.combo-list li[aria-selected="true"],.combo-list li:hover{background:var(--soft)}
+.combo-list li span{color:var(--sub);font-variant-numeric:tabular-nums}
+.devlist{list-style:none;margin:8px 0 0;padding:0;max-height:420px;overflow:auto}
+.devlist li button{width:100%;text-align:left;font:inherit;background:none;border:0;border-radius:6px;padding:8px;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;gap:8px}
+.devlist li button[aria-current="true"]{background:var(--soft);font-weight:700}
+.devlist li small{color:var(--sub)}
+.subgrid{display:grid;grid-template-columns:1fr 130px;gap:6px 10px;align-items:center;font-size:14px}
+.subgrid input{width:100%}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="top"><h1>통신3사 요금 상담</h1><span class="date">요금 기준 2026년 10월 1일 · 각사 통합요금제</span>
+    <button class="btn ghost" id="themeBtn" style="margin-left:auto" aria-label="화면 밝기 전환">◐ 화면</button></div>
+  <nav role="tablist" aria-label="메뉴">
+    <button role="tab" aria-selected="true" data-tab="buy">휴대폰 구매</button>
+    <button role="tab" aria-selected="false" data-tab="cmp">3사 비교</button>
+    <button role="tab" aria-selected="false" data-tab="fam">가족 계산기</button>
+    <button role="tab" aria-selected="false" data-tab="list">요금제표</button>
+    <button role="tab" aria-selected="false" data-tab="dev">단말 관리</button>
+    <button role="tab" aria-selected="false" data-tab="age">연령 혜택</button>
+    <button role="tab" aria-selected="false" data-tab="note">상담 주의사항</button>
+  </nav>
+</header>
+<main>
+
+<section id="buy">
+  <div class="print-only print-head"><b>안산모바일 휴대폰 개통 상담서</b><span id="pDate"></span></div>
+  <h2>휴대폰 구매 고객 월 납부액</h2>
+  <p class="lead">통신사와 요금제를 고르면 이통사지원금과 선택약정 두 방식의 월 납부액을 나란히 보여줍니다. 의무 유지 기간 동안의 요금과, 그 뒤 바꿀 요금제의 요금을 함께 계산합니다.</p>
+
+  <div class="panel">
+    <p class="step">1. 가입 통신사</p>
+    <div class="carriers" id="buyCar">
+      <button class="SKT" data-c="SKT" aria-pressed="false">SKT</button>
+      <button class="KT" data-c="KT" aria-pressed="false">KT</button>
+      <button class="LGU" data-c="LGU" aria-pressed="true">LG U+</button>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:12px">
+    <p class="step">2. 요금제</p>
+    <div class="grid2">
+      <div class="field">개통 요금제 (유지 기간 동안)
+        <select id="bPlanA"></select><div class="plancard" id="bCardA"></div></div>
+      <div class="field">유지 기간 이후 바꿀 요금제
+        <select id="bPlanB"></select><div class="plancard" id="bCardB"></div></div>
+    </div>
+    <div class="fields" style="margin-top:12px">
+      <label class="field">지원금 유지 기간(개월)<input type="number" id="bHoldS" value="6" min="0" max="24"></label>
+      <label class="field">선택약정 유지 기간(개월)<input type="number" id="bHoldY" value="3" min="0" max="24"></label>
+      <label class="field">나이 (연령 혜택 표시)<select id="bAge"></select></label>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:12px">
+    <p class="step">3. 휴대폰 가격</p>
+    <div class="fields">
+      <label class="field">고객명<input type="text" id="bCust" placeholder="예: 김OO" autocomplete="off"></label>
+      <div class="field combo-box" style="grid-column:span 2">기종 검색
+        <input type="text" id="bModel" placeholder="모델명 입력 (예: s26, 폴드, 아이폰)" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="bModelList" aria-autocomplete="list">
+        <ul class="combo-list" id="bModelList" role="listbox" hidden></ul>
+        <span class="muted" id="bSubHint" style="font-weight:400"></span></div>
+      <label class="field">출고가<input type="number" id="bPrice" value="1550000" step="1000" inputmode="numeric"></label>
+      <label class="field">이통사 공시지원금<input type="number" id="bSub" value="500000" step="1000" inputmode="numeric"></label>
+      <label class="field">추가지원금 (지원금 개통)<input type="number" id="bAddS" value="0" step="1000" inputmode="numeric"></label>
+      <label class="field">추가지원금 (선택약정 개통)<input type="number" id="bAddY" value="0" step="1000" inputmode="numeric"></label>
+      <label class="field">할부 기간<select id="bMonths"><option value="24" selected>24개월</option><option value="36">36개월</option><option value="12">12개월</option><option value="0">일시불</option></select></label>
+      <label class="field">할부 이자율(연 %)<input type="number" id="bRate" value="5.9" step="0.1"></label>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:12px">
+    <p class="step">4. 추가 할인 (월)</p>
+    <div class="fields">
+      <label class="field">결합할인<input type="number" id="bCombo" value="0" step="100" inputmode="numeric"></label>
+      <label class="field">복지할인 종류<select id="bWelf"><option value="none">해당 없음</option><option value="p35">장애인·국가유공자 (35%)</option><option value="manual">기초생활·차상위·기초연금 (금액 입력)</option></select></label>
+      <label class="field">복지할인 금액<input type="number" id="bWelfAmt" value="0" step="100" inputmode="numeric" disabled></label>
+      <label class="field">제휴카드 등 기타<input type="number" id="bEtc" value="0" step="100" inputmode="numeric"></label>
+    </div>
+    <p class="muted" style="margin:8px 0 0">복지할인 35%는 선택약정 적용 후 요금 기준 예상값입니다. 실제 금액은 전산을 따르세요.</p>
+  </div>
+
+  <div class="panel" style="margin-top:12px" id="salePanel">
+    <p class="step">5. 고객 선택 · 개통 정보 <span class="muted" style="font-weight:400">(판매일보에 기록됩니다)</span></p>
+    <div class="row" style="gap:14px;margin-bottom:12px">
+      <span class="muted" style="font-weight:600">고객 선택</span>
+      <div class="seg" id="sMethod"></div>
+      <span class="muted" style="font-weight:600;margin-left:8px">가입유형</span>
+      <div class="seg" id="sType"></div>
+    </div>
+    <div class="fields">
+      <label class="field">개통일<input type="date" id="sOpen"></label>
+      <label class="field">휴대폰번호<input type="tel" id="sPhone" placeholder="010-0000-0000" inputmode="tel" autocomplete="off"></label>
+      <label class="field">생년월일<input type="date" id="sBirth"></label>
+      <label class="field">일련번호<input type="text" id="sSerial" autocomplete="off"></label>
+      <label class="field">이전 사업자<select id="sPrev"><option value="">선택</option><option>SKT</option><option>KT</option><option>LGU+</option><option>알뜰폰</option><option>신규</option></select></label>
+      <label class="field">거래처<select id="sVendor"></select></label>
+    </div>
+    <div class="subhead">2nd 번들</div>
+    <div class="seg" id="s2nd"></div>
+    <div class="subhead">부가서비스 <span class="muted" style="font-weight:400">(여러 개 선택 가능)</span></div>
+    <div class="chips" id="sAddon"></div>
+    <div class="fields" style="margin-top:12px">
+      <label class="field">보험<select id="sIns"></select></label>
+      <label class="field">제휴카드<select id="sCard"></select></label>
+      <label class="field">카드 할부승인금액<input type="number" id="sCardAmt" step="1000" inputmode="numeric" placeholder="0"></label>
+      <label class="field">결합 여부<select id="sBundleYN"><option value="N">N</option><option value="Y">Y</option></select></label>
+      <label class="field">결합 종류<select id="sBundle"></select></label>
+    </div>
+    <div class="fields" style="margin-top:12px">
+      <label class="field">중고폰 반납<select id="sUsed"><option value="N">N</option><option value="Y">Y</option></select></label>
+      <label class="field">중고폰 판매금액<input type="number" id="sUsedSell" step="1000" inputmode="numeric" placeholder="0"></label>
+      <label class="field">중고폰 고객지급<input type="number" id="sUsedPay" step="1000" inputmode="numeric" placeholder="0"></label>
+      <label class="field no-print">기타 지출 (사은품 등)<input type="number" id="sEtcCost" step="1000" inputmode="numeric" placeholder="0"></label>
+      <label class="field no-print">정책조정 수기(원)<input type="number" id="sAdj" step="1000" inputmode="numeric" placeholder="0"></label>
+    </div>
+    <label class="row consent" style="gap:8px;margin-top:14px;font-size:14px"><input type="checkbox" id="sConsent"> 고객이 개인정보 수집·이용(개통 및 사후관리 목적)에 동의했습니다</label>
+  </div>
+
+  <div class="result" id="bResult"></div>
+  <p class="warn" id="bWarn" style="font-size:13.5px;margin-top:10px"></p>
+  <div class="panel no-print" style="margin-top:12px">
+    <div class="row" style="justify-content:space-between"><b>완료 · 출력</b><span class="row">
+      <button class="btn primary" id="sSave">판매일보 저장</button>
+      <button class="btn" id="sPrint">가입서류 출력 (A4)</button>
+      <button class="btn" id="sPdf">드라이브에 PDF 저장</button></span></div>
+    <p class="muted" id="sMsg" style="margin:8px 0 0"></p>
+    <div class="row" style="justify-content:space-between;margin-top:14px;border-top:1px solid var(--line);padding-top:12px"><b>고객에게 보내기</b><span class="row"><button class="btn" id="bCopy">안내문 복사</button><button class="btn" id="bImg">이미지로 저장</button></span></div>
+    <textarea id="bText" readonly style="margin-top:10px" aria-label="휴대폰 구매 안내문"></textarea>
+  </div>
+  <div class="print-only sign">
+    <div>위 내용(요금제 유지기간 및 변경 가능일 포함)을 안내받고 확인하였습니다.</div>
+    <div class="sign-row"><span>작성일 <b id="pDate2"></b></span><span>고객명 <b id="pCust"></b></span><span>서명 ____________________</span><span>담당 ____________</span></div>
+    <div class="muted">안산모바일 · 고객센터 010-5508-5522 · 직통 010-8263-5588 · 월~토 10:00~19:00</div>
+  </div>
+</section>
+
+<section id="cmp" hidden>
+  <h2>가족 조건으로 3사 월 납부액 비교</h2>
+  <p class="lead">회선마다 나이와 필요한 데이터를 고르면, 통신사별로 조건을 만족하는 가장 저렴한 요금제를 찾아 선택약정 적용 금액을 합산합니다. 연령 혜택(청소년·청년·시니어 추가 데이터)도 반영합니다.</p>
+  <div class="panel">
+    <div class="lines" id="cmpLines"></div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn" id="addCmp">회선 추가</button>
+      <label class="row" style="gap:6px"><input type="checkbox" id="cmpSel" checked> 선택약정 25% 적용</label>
+    </div>
+  </div>
+  <div class="board" id="board"></div>
+  <p class="muted" style="margin-top:10px">결합할인 칸은 정책표 기준으로 직접 입력하세요. SKT는 무선간 요즘가족결합(휴대폰끼리) 금액이 자동으로 채워지며, 고쳐 쓸 수 있습니다.</p>
+</section>
+
+<section id="fam" hidden>
+  <h2>가족 계산기</h2>
+  <p class="lead">고객이 고른 요금제를 회선별로 넣고 결합할인까지 반영한 실제 월 납부액을 계산합니다. 결과는 문자나 카톡으로 보낼 수 있게 복사됩니다.</p>
+  <div class="panel fam">
+    <div class="frow fhead"><span>#</span><span>통신사</span><span>요금제</span><span>나이</span><span>선택약정</span><span>결합할인(월)</span><span class="r">월 납부액</span><span></span></div>
+    <div id="famRows"></div>
+    <div class="row" style="margin-top:12px"><button class="btn" id="addFam">회선 추가</button></div>
+    <div class="sumbox">
+      <div><div class="muted">월 합계</div><div class="big num" id="famTotal">0원</div></div>
+      <div><div class="muted">24개월 합계</div><div class="num" style="font-size:20px;font-weight:600" id="famTotal24">0원</div></div>
+      <div><div class="muted">정가 대비 월 절감</div><div class="num" style="font-size:20px;font-weight:600" id="famSave">0원</div></div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <div class="row" style="justify-content:space-between"><b>고객 안내문</b><button class="btn primary" id="copyBtn">안내문 복사</button></div>
+    <textarea id="famText" readonly style="margin-top:10px" aria-label="고객 안내문"></textarea>
+  </div>
+</section>
+
+<section id="dev" hidden>
+  <h2>단말 관리</h2>
+  <p class="lead">기종별 출고가와 통신사·요금제별 공시지원금을 입력해두면 휴대폰 구매 화면에서 자동으로 불러옵니다. 입력한 내용은 이 링크를 쓰는 모든 기기(패드·PC)에 같이 반영됩니다.</p>
+  <p class="muted" id="devStore" style="margin-top:-8px"></p>
+  <div class="grid2" style="grid-template-columns:minmax(220px,300px) 1fr">
+    <div class="panel">
+      <input type="text" id="devQ" placeholder="기종 검색" aria-label="기종 검색" style="width:100%">
+      <ul class="devlist" id="devList"></ul>
+      <button class="btn" id="devNew" style="width:100%;margin-top:8px">기종 추가</button>
+    </div>
+    <div class="panel" id="devEdit"></div>
+  </div>
+  <details class="panel" style="margin-top:14px">
+    <summary style="cursor:pointer;font-weight:600">시트에서 한 번에 붙여넣기</summary>
+    <p class="muted">구글 시트에서 아래 순서의 열을 복사해 붙여넣으세요. 한 줄에 한 요금제씩, 같은 기종은 여러 줄로 넣으면 됩니다.<br>
+    <b>기종명 · 출고가 · 통신사(SKT/KT/LGU) · 요금제명 · 공시지원금</b></p>
+    <textarea id="bulkIn" placeholder="갤럭시 S26 256GB	1403600	LGU	데이터플랜MAX	500000"></textarea>
+    <div class="row" style="margin-top:8px"><button class="btn primary" id="bulkBtn">붙여넣은 내용 반영</button><span class="muted" id="bulkMsg"></span></div>
+  </details>
+</section>
+
+<section id="list" hidden>
+  <h2>요금제표</h2>
+  <p class="lead">현재 매장에서 신규 개통 가능한 요금제입니다. 온라인 전용(너겟·다이렉트·요고)은 제외했습니다.</p>
+  <div class="filters">
+    <div class="seg" id="carrierSeg"></div>
+    <select id="sortSel" aria-label="정렬"><option value="desc">월정액 높은 순</option><option value="asc">월정액 낮은 순</option></select>
+    <input type="text" id="q" placeholder="요금제명 검색" aria-label="요금제명 검색">
+  </div>
+  <div class="panel scroll" style="padding:0"><table id="planTable"></table></div>
+  <p class="muted" style="margin-top:8px"><span class="chk">확인</span> 표시는 공개 자료로 세부 조건을 확정하지 못한 항목입니다. 개통 전 전산에서 확인하세요.</p>
+</section>
+
+<section id="age" hidden>
+  <h2>연령 혜택 (자동 적용)</h2>
+  <p class="lead">3사 모두 통합요금제에서는 나이에 맞는 혜택이 신청 없이 붙습니다. 혜택은 명의당 1회선에만 적용됩니다.</p>
+  <div class="filters"><div class="seg" id="ageSeg"></div></div>
+  <div class="panel scroll" style="padding:0"><table id="ageTable"></table></div>
+  <p class="muted" id="ageNote" style="margin-top:8px"></p>
+</section>
+
+<section id="note" hidden>
+  <h2>상담 주의사항</h2>
+  <p class="lead">2026년 6~7월 3사 모두 요금 체계를 통합요금제로 바꿨습니다. 기존 요금제는 기존 가입자만 유지할 수 있습니다.</p>
+  <div class="notes">
+    <div class="panel"><b class="c-SKT">SKT</b><ul>
+      <li>7월 2일부터 베스트 5종·라이트 16종(라이트 59 업 4종 포함)으로 개편, 5GX·0청년·T플랜 등 67종 신규 가입 종료.</li>
+      <li>가입 중단 요금제는 다른 요금제로 바꾸면 재가입 불가, 명의변경 시 승계 불가.</li>
+      <li>무선간 요즘가족결합: 인터넷 없이 휴대폰 2회선 이상이면 가입. 2회선 각 3,000원, 3~4회선 각 5,000원, 5회선 각 4,800원. 인터넷이 있으면 유무선 결합으로 자동 전환되어 할인 폭이 커짐.</li>
+      <li>T끼리 온가족할인은 신규 가입과 회선 추가 불가(기존 유지).</li>
+      <li>연령 혜택은 동일 명의 1회선, 먼저 가입한 회선에 우선 적용.</li>
+    </ul></div>
+    <div class="panel"><b class="c-KT">KT</b><ul>
+      <li>7월 1일부터 초이스 4종·베이직 14종(통합 18종), 기존 5G·LTE 105종 신규 가입 종료. 키즈·요고(온라인)·웰컴(외국인)은 별도 유지.</li>
+      <li>베이직 21GB~4GB는 같은 요금의 데이터 이월형도 운영.</li>
+      <li>연령 덤(스쿨덤·Y덤·65+덤·75+덤)은 월정액이 높은 회선, 같으면 최근 가입 회선에 적용.</li>
+      <li>정률형 결합 가입 가구의 모바일 회선 추가가 중단됨 → 결합 상담 시 정책표 확인 필수.</li>
+      <li>군 복무 중 4만5천원 이상 요금제: 매일 2GB 추가, 월정액 20% 할인(Y덤과 중복).</li>
+      <li>로밍 포함 요금제는 개통·변경 후 30일 지나야 하향 가능.</li>
+    </ul></div>
+    <div class="panel"><b class="c-LGU">LG U+</b><ul>
+      <li>6월 1일부터 플러스플랜 4종·데이터플랜 14종, 기존 53종 신규 가입 종료.</li>
+      <li>데이터플랜 1.5GB(33,000원) 이하는 참 쉬운 가족 결합 등 결합상품 불가.</li>
+      <li>지원금 개통 후 180일 지나 데이터플랜 300MB~5GB로 내리면 차액정산금 청구 → 저가로 내릴 고객은 선택약정 개통.</li>
+      <li>프리미엄 요금제 약정할인(월 5,250원)은 7월 31일 신규 종료.</li>
+      <li>최고가 요금제 자녀 가족할인이 축소됨(기존 고객 유지) → 정책표 확인.</li>
+    </ul></div>
+    <div class="panel"><b>공통</b><ul>
+      <li>선택약정 25%는 3사 통합요금제 전 구간 대상.</li>
+      <li>결합할인은 개편이 잦아 이 화면에 고정값을 넣지 않았습니다(SKT 무선간 결합 제외). 매장 정책표 기준으로 입력하세요.</li>
+      <li>출처: SKT T다이렉트샵 요금제 가이드(2026.7.2), LG U+ 공지(2026.5.6), 언론 보도(2026.5~8월), 요금제 정리 사이트 교차 확인.</li>
+    </ul></div>
+  </div>
+</section>
+</main>
+<div class="modal" id="imgModal" hidden role="dialog" aria-modal="true" aria-labelledby="imgTitle">
+  <div class="mbox">
+    <div class="row" style="justify-content:space-between;margin-bottom:10px"><b id="imgTitle">고객 안내 이미지</b><button class="btn ghost" id="imgClose" aria-label="닫기">닫기</button></div>
+    <div class="mimg"><img id="imgPrev" alt="고객 안내 이미지 미리보기"></div>
+    <div class="row" style="margin-top:12px;justify-content:flex-end">
+      <span class="muted" id="imgHint" style="margin-right:auto"></span>
+      <button class="btn primary" id="imgSave">이미지 저장</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const INF = Infinity;
+const CARRIERS = {SKT:'SKT', KT:'KT', LGU:'LG U+'};
+// [carrier, id, name, price, dataGB, dataLabel, qos, share, voice, sms, perks, combo, note, verify]
+const V_STD = '무제한', S_STD='기본제공';
+const P = [
+ // ---- SKT
+ ['SKT','s-max','베스트 Max',129000,INF,'완전 무제한','-','140GB','무제한 (영상·부가 300분)',S_STD,'멤버십 VIP, 스마트기기 2회선 무료','○','신설 최상위',0],
+ ['SKT','s-pro','베스트 Pro',119000,INF,'완전 무제한','-','120GB','무제한 (영상·부가 300분)',S_STD,'멤버십 VIP, 스마트기기 2회선 무료','○','舊 5GX 플래티넘',0],
+ ['SKT','s-109','베스트 109',109000,INF,'완전 무제한','-','100GB','무제한 (영상·부가 300분)',S_STD,'멤버십 VIP, 스마트기기 2회선 무료','○','舊 5GX 프리미엄',0],
+ ['SKT','s-99','베스트 99',99000,INF,'완전 무제한','-','80GB','무제한 (영상·부가 300분)',S_STD,'멤버십 VIP, 스마트기기 2회선 무료','○','舊 5GX 프라임플러스',0],
+ ['SKT','s-89','베스트 89',89000,INF,'완전 무제한','-','60GB','무제한 (영상·부가 300분)',S_STD,'멤버십 VIP, 스마트기기 1회선 무료','○','舊 5GX 프라임',0],
+ ['SKT','s-l79','라이트 79',79000,250,'250GB','5Mbps','54GB','무제한 (영상·부가 300분)',S_STD,'스마트기기 1회선 50% 할인','○','舊 5GX 레귤러플러스',0],
+ ['SKT','s-l69','라이트 69',69000,110,'110GB','5Mbps','48GB','무제한 (영상·부가 300분)',S_STD,'','○','',0],
+ ['SKT','s-l5975','라이트 59 75GB업',68000,99,'99GB (24+충전75)','1Mbps','24GB','무제한 (영상·부가 300분)',S_STD,'정기 충전형','○','',0],
+ ['SKT','s-l5950','라이트 59 50GB업',66000,74,'74GB (24+충전50)','1Mbps','24GB','무제한 (영상·부가 300분)',S_STD,'정기 충전형','○','',0],
+ ['SKT','s-l5930','라이트 59 30GB업',64000,54,'54GB (24+충전30)','1Mbps','24GB','무제한 (영상·부가 300분)',S_STD,'정기 충전형','○','',0],
+ ['SKT','s-l5913','라이트 59 13GB업',62000,37,'37GB (24+충전13)','1Mbps','24GB','무제한 (영상·부가 300분)',S_STD,'정기 충전형','○','',0],
+ ['SKT','s-l59','라이트 59',59000,24,'24GB','1Mbps','24GB','무제한 (영상·부가 300분)',S_STD,'1회성 데이터 충전 가능','○','',0],
+ ['SKT','s-l55','라이트 55',55000,15,'15GB','1Mbps','기본 제공량 내','무제한 (영상·부가 300분)',S_STD,'1회성 데이터 충전 가능','○','',0],
+ ['SKT','s-l49','라이트 49',49000,11,'11GB','400Kbps','기본 제공량 내','무제한 (영상·부가 300분)',S_STD,'1회성 데이터 충전 가능','○','',0],
+ ['SKT','s-l45','라이트 45',45000,8,'8GB','400Kbps','기본 제공량 내','무제한 (영상·부가 300분)',S_STD,'1회성 데이터 충전 가능','○','',0],
+ ['SKT','s-l39','라이트 39',39000,6,'6GB','400Kbps','기본 제공량 내','무제한 (영상·부가 300분)',S_STD,'1회성 데이터 충전 가능','○','',0],
+ ['SKT','s-save','T플랜 세이브',33000,1.5,'1.5GB','400Kbps','기본 제공량 내','무제한',S_STD,'통합 요금제로 전환된 기존 요금제','○','',1],
+ ['SKT','s-tkk','뉴 T끼리 맞춤형 (100분+250MB)',27830,0.25,'250MB','400Kbps','-','망내 무제한 + 이외 100분','확인','통합 요금제로 전환된 기존 요금제','확인','',1],
+ // ---- KT
+ ['KT','k-c130','초이스130',130000,INF,'완전 무제한','-','100GB','기본제공 (부가 300분)',S_STD,'스마트기기 할인 최대 2회선, OTT·폰케어·디바이스 선택','확인','로밍 데이터 포함',0],
+ ['KT','k-cdb','초이스 더블',120000,INF,'완전 무제한','-','90GB','기본제공 (부가 300분)',S_STD,'OTT·폰케어·디바이스 선택','확인','',0],
+ ['KT','k-c110','초이스110',110000,INF,'완전 무제한','-','80GB','기본제공 (부가 300분)',S_STD,'OTT·폰케어·디바이스 선택','확인','',0],
+ ['KT','k-c90','초이스90',90000,INF,'완전 무제한','-','60GB','기본제공 (부가 300분)',S_STD,'OTT·폰케어·디바이스 선택','확인','',0],
+ ['KT','k-b100','베이직100',100000,INF,'완전 무제한','-','70GB','기본제공 (부가 300분)',S_STD,'','확인','',0],
+ ['KT','k-b80','베이직80',80000,INF,'완전 무제한','-','50GB','기본제공 (부가 300분)',S_STD,'','확인','3사 무제한 중 최저가',0],
+ ['KT','k-b110','베이직110GB',69000,110,'110GB','5Mbps','기본 제공량 내','기본제공 (부가 300분)',S_STD,'','확인','',1],
+ ['KT','k-b90','베이직90GB',67000,90,'90GB','1Mbps','기본 제공량 내','기본제공 (부가 300분)',S_STD,'','확인','',1],
+ ['KT','k-b70','베이직70GB',65000,70,'70GB','1Mbps','기본 제공량 내','기본제공 (부가 300분)',S_STD,'','확인','',1],
+ ['KT','k-b50','베이직50GB',63000,50,'50GB','1Mbps','기본 제공량 내','기본제공 (부가 300분)',S_STD,'','확인','',1],
+ ['KT','k-b30','베이직30GB',61000,30,'30GB','1Mbps','기본 제공량 내','기본제공 (부가 300분)',S_STD,'','확인','',1],
+ ['KT','k-b21','베이직21GB',58000,21,'21GB','1Mbps','기본 제공량 내','기본제공 (부가 300분)',S_STD,'이월형 동일 요금 운영','확인','',1],
+ ['KT','k-b14','베이직14GB',55000,14,'14GB','1Mbps','기본 제공량 내','기본제공 (부가 300분)',S_STD,'이월형 동일 요금 운영','확인','',1],
+ ['KT','k-b10','베이직10GB',50000,10,'10GB','400Kbps','기본 제공량 내','기본제공 (부가 300분)',S_STD,'이월형 동일 요금 운영','확인','',1],
+ ['KT','k-b7','베이직7GB',45000,7,'7GB','400Kbps','기본 제공량 내','기본제공 (부가 300분)',S_STD,'이월형 동일 요금 운영','확인','',1],
+ ['KT','k-b4','베이직4GB',37000,4,'4GB','400Kbps','기본 제공량 내','기본제공 (부가 300분)',S_STD,'이월형 동일 요금 운영','확인','',1],
+ ['KT','k-b14g','베이직1.4GB',33000,1.4,'1.4GB','400Kbps','기본 제공량 내','기본제공 (부가 50분)',S_STD,'','확인','',1],
+ ['KT','k-b600','베이직600MB',28900,0.6,'600MB','400Kbps','-','180분','180건','','확인','',1],
+ // ---- LG U+
+ ['LGU','l-p130','플러스플랜130',130000,INF,'무제한','-','120GB',V_STD,S_STD,'프리미엄플러스 택1 + 데일리플러스, 가족 데이터 60GB','○','舊 5G 시그니처',0],
+ ['LGU','l-p115','플러스플랜115',115000,INF,'무제한','-','100GB',V_STD,S_STD,'프리미엄플러스 택1 + 데일리플러스, 가족 데이터 50GB','○','舊 5G 프리미어 슈퍼',0],
+ ['LGU','l-p105','플러스플랜105',105000,INF,'무제한','-','100GB',V_STD,S_STD,'프리미엄플러스 택1 + 데일리플러스','○','舊 5G 프리미어 플러스',0],
+ ['LGU','l-p95','플러스플랜95',95000,INF,'무제한','-','80GB',V_STD,S_STD,'데일리플러스 택1','○','',0],
+ ['LGU','l-max','데이터플랜MAX',85000,INF,'무제한','-','70GB',V_STD,S_STD,'','○','',0],
+ ['LGU','l-150','데이터플랜150GB',75000,150,'150GB','5Mbps','60GB',V_STD,S_STD,'','○','',0],
+ ['LGU','l-125','데이터플랜125GB',70000,125,'125GB','5Mbps','55GB',V_STD,S_STD,'','○','',0],
+ ['LGU','l-95','데이터플랜95GB',68000,95,'95GB','3Mbps','50GB',V_STD,S_STD,'','○','',0],
+ ['LGU','l-80','데이터플랜80GB',66000,80,'80GB','1Mbps','45GB',V_STD,S_STD,'','○','',0],
+ ['LGU','l-50','데이터플랜50GB',63000,50,'50GB','1Mbps','40GB',V_STD,S_STD,'','○','',0],
+ ['LGU','l-31','데이터플랜31GB',61000,31,'31GB','1Mbps','기본 제공량 내',V_STD,S_STD,'','○','',0],
+ ['LGU','l-24','데이터플랜24GB',59000,24,'24GB','1Mbps','기본 제공량 내',V_STD,S_STD,'','○','',0],
+ ['LGU','l-14','데이터플랜14GB',55000,14,'14GB','1Mbps','기본 제공량 내',V_STD,S_STD,'','○','',0],
+ ['LGU','l-9','데이터플랜9GB',47000,9,'9GB','400Kbps','기본 제공량 내',V_STD,S_STD,'','○','',0],
+ ['LGU','l-5','데이터플랜5GB',37000,5,'5GB','400Kbps','기본 제공량 내',V_STD,S_STD,'','○','하향 시 차액정산 주의',0],
+ ['LGU','l-15','데이터플랜1.5GB',33000,1.5,'1.5GB','400Kbps','기본 제공량 내','무제한 (부가 110분)',S_STD,'','×','결합 불가, 차액정산 주의',0],
+ ['LGU','l-075','데이터플랜750MB',29000,0.75,'750MB','400Kbps','기본 제공량 내','125분','150건','','×','결합 불가, 차액정산 주의',1],
+ ['LGU','l-03','데이터플랜300MB',28000,0.3,'300MB','400Kbps','기본 제공량 내','125분','150건','','×','결합 불가, 차액정산 주의',1],
+].map(a=>({c:a[0],id:a[1],name:a[2],price:a[3],data:a[4],dlab:a[5],qos:a[6],share:a[7],voice:a[8],sms:a[9],perk:a[10],combo:a[11],note:a[12],verify:a[13]}));
+const byId = Object.fromEntries(P.map(p=>[p.id,p]));
+
+const AGES = [['gen','일반'],['teen','청소년(~18세)'],['youth','청년(19~34세)'],['s65','시니어(65~74세)'],['s75','시니어(75세~)']];
+// 연령별 추가 데이터 (GB, 기본 데이터 기준). null = 혜택 없음
+const SKT_AGE = { // teen, youth, senior
+ 's-l79':[300,300,null],'s-l69':[160,160,null],'s-l5975':[136,136,null],'s-l5950':[96,96,null],'s-l5930':[72,72,null],'s-l5913':[51,51,null],
+ 's-l59':[36,36,null],'s-l55':[21,21,null],'s-l49':[15,15,null],'s-l45':[10.5,10,10.5],'s-l39':[7.5,7,7.5],'s-save':[2.5,2,2.5]};
+const LGU_AGE = { // teen, youth, senior
+ 'l-150':[null,210,null],'l-125':[null,185,null],'l-95':[null,135,null],'l-80':[null,110,null],'l-50':[null,70,null],'l-31':[null,41,null],
+ 'l-24':[null,36,null],'l-14':[null,26,null],'l-9':[11,15,12],'l-5':[7,9,8],'l-15':[2.5,2,2.5],'l-075':[1.25,null,1.25],'l-03':[1,null,1]};
+
+function effData(p, age){
+  if(p.data===INF || age==='gen') return p.data;
+  if(p.c==='SKT'){ const t=SKT_AGE[p.id]; if(!t) return p.data; const v = age==='teen'?t[0]:age==='youth'?t[1]:t[2]; return v??p.data; }
+  if(p.c==='LGU'){ const t=LGU_AGE[p.id]; if(!t) return p.data; const v = age==='teen'?t[0]:age==='youth'?t[1]:t[2]; return v??p.data; }
+  if(p.c==='KT'){
+    if(p.id==='k-b600'){ const add={teen:0.4,youth:0,s65:0.2,s75:0.4}[age]; return p.data+add; }
+    const m={teen:2,youth:2,s65:1.5,s75:2}[age]; return p.data*m;
+  }
+  return p.data;
+}
+function ageNote(p, age){
+  if(age==='gen') return '';
+  if(p.data===INF){
+    if(p.c==='SKT' && (age==='teen'||age==='youth')) return '공유·테더링 +20GB';
+    if(p.c==='LGU' && age==='youth' ) return '공유데이터 +60GB';
+    if(p.c==='KT') return '공유데이터 '+({teen:'2배',youth:'2배',s65:'1.5배',s75:'2배'}[age]);
+    return '';
+  }
+  const e=effData(p,age); return e>p.data? `연령 혜택 ${fmtGB(e)}`:'';
+}
+const won = n => (Math.round(n)).toLocaleString('ko-KR')+'원';
+const fmtGB = g => g===INF?'무제한': g<1? Math.round(g*1000)+'MB' : (Number.isInteger(g)?g:g.toFixed(g*10%1?2:1).replace(/\.0+$/,''))+'GB';
+const selDisc = price => Math.floor(price*0.25/10)*10;
+
+// ---------- tabs
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.setAttribute('aria-selected', x===b));
+  document.querySelectorAll('main section').forEach(s=>s.hidden = s.id!==b.dataset.tab);
+}));
+const themeBtn=document.getElementById('themeBtn');
+themeBtn.addEventListener('click',()=>{
+  const r=document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  r.dataset.theme = dark?'light':'dark';
+  try{localStorage.setItem('theme',r.dataset.theme)}catch(e){}
+});
+try{const t=localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme=t;}catch(e){}
+
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1600)}
+
+// ---------- 3사 비교
+const NEEDS = [[INF,'무제한'],[150,'150GB 이상'],[100,'100GB 이상'],[50,'50GB 이상'],[30,'30GB 이상'],[20,'20GB 이상'],[10,'10GB 이상'],[5,'5GB 이상'],[1,'1GB 이상'],[0,'최소(통화 위주)']];
+let cmp = [{age:'gen',need:INF},{age:'gen',need:50},{age:'teen',need:10}];
+const comboIn = {SKT:null,KT:'',LGU:''}; // null = auto
+function sktWireless(n){ if(n<2) return 0; const per = n===2?3000: n<=4?5000:4800; return per*Math.min(n,5); }
+
+function renderCmpLines(){
+  const box=document.getElementById('cmpLines'); box.innerHTML='';
+  cmp.forEach((l,i)=>{
+    const d=document.createElement('div'); d.className='line';
+    d.innerHTML=`<span class="lab">${i+1}회선</span>
+      <select aria-label="${i+1}회선 나이">${AGES.map(([v,t])=>`<option value="${v}" ${v===l.age?'selected':''}>${t}</option>`).join('')}</select>
+      <select aria-label="${i+1}회선 필요 데이터">${NEEDS.map(([v,t])=>`<option value="${v}" ${v===l.need?'selected':''}>${t}</option>`).join('')}</select>
+      <button class="btn ghost" aria-label="${i+1}회선 삭제" ${cmp.length<2?'disabled':''}>삭제</button>`;
+    const [sa,sn]=d.querySelectorAll('select');
+    sa.onchange=()=>{l.age=sa.value;renderBoard()};
+    sn.onchange=()=>{l.need=sn.value==='Infinity'?INF:+sn.value;renderBoard()};
+    d.querySelector('button').onclick=()=>{cmp.splice(i,1);renderCmpLines();renderBoard()};
+    box.appendChild(d);
+  });
+}
+function pickPlan(c, age, need){
+  const cand=P.filter(p=>p.c===c && effData(p,age)>=need).sort((a,b)=>a.price-b.price);
+  return cand[0];
+}
+function renderBoard(){
+  const useSel=document.getElementById('cmpSel').checked;
+  const res = Object.keys(CARRIERS).map(c=>{
+    const picks=cmp.map(l=>pickPlan(c,l.age,l.need));
+    const base=picks.reduce((s,p)=>s+p.price,0);
+    const sel=useSel?picks.reduce((s,p)=>s+selDisc(p.price),0):0;
+    let combo;
+    if(c==='SKT') combo = comboIn.SKT===null? sktWireless(picks.length) : (+comboIn.SKT||0);
+    else combo = +comboIn[c]||0;
+    return {c,picks,base,sel,combo,total:base-sel-combo};
+  });
+  const min=Math.min(...res.map(r=>r.total));
+  const board=document.getElementById('board'); board.innerHTML='';
+  res.forEach(r=>{
+    const col=document.createElement('div'); col.className='col '+r.c+(r.total===min?' best':'');
+    const diff=r.total-min;
+    col.innerHTML=`<div class="bar"></div><h3 class="c-${r.c}">${CARRIERS[r.c]}</h3>
+      <div class="total num">${(Math.round(r.total)).toLocaleString('ko-KR')}<small>원/월</small></div>
+      <div class="best-flag">가장 저렴</div>
+      <div class="diff num">${diff>0?`최저가보다 월 ${won(diff)} 비쌈 · 24개월 ${won(diff*24)}`:`정가 ${won(r.base)} − 약정 ${won(r.sel)} − 결합 ${won(r.combo)}`}</div>
+      <ul class="plist">${r.picks.map((p,i)=>{const an=ageNote(p,cmp[i].age);return `<li><span class="muted">${i+1}회선</span> <b>${p.name}</b><br>
+        <span class="num">${won(p.price - (useSel?selDisc(p.price):0))}</span> <span class="muted">· ${p.dlab}${p.qos!=='-'?' + '+p.qos:''}${an?' · '+an:''}</span>${p.combo==='×'?' <span class="warn" style="font-size:12px">결합 불가</span>':''}</li>`}).join('')}</ul>
+      <label class="combo"><span>결합할인(월 총액)${r.c==='SKT'&&comboIn.SKT===null?' <span class="muted">자동</span>':''}</span>
+        <input type="number" inputmode="numeric" min="0" step="100" value="${r.c==='SKT'?(comboIn.SKT===null?r.combo:comboIn.SKT):comboIn[r.c]}" placeholder="0" aria-label="${CARRIERS[r.c]} 결합할인"></label>`;
+    const inp=col.querySelector('input');
+    inp.addEventListener('change',()=>{comboIn[r.c]=inp.value===''?(r.c==='SKT'?null:''):inp.value;renderBoard()});
+    board.appendChild(col);
+  });
+}
+document.getElementById('addCmp').onclick=()=>{cmp.push({age:'gen',need:10});renderCmpLines();renderBoard()};
+document.getElementById('cmpSel').onchange=renderBoard;
+
+// ---------- 가족 계산기
+let fam=[{c:'LGU',id:'l-max',age:'gen',sel:true,combo:0},{c:'LGU',id:'l-80',age:'gen',sel:true,combo:0},{c:'LGU',id:'l-9',age:'teen',sel:true,combo:0}];
+function planOpts(c,cur){return P.filter(p=>p.c===c).map(p=>`<option value="${p.id}" ${p.id===cur?'selected':''}>${p.name} (${p.price.toLocaleString()}원)</option>`).join('')}
+function renderFam(){
+  const box=document.getElementById('famRows'); box.innerHTML='';
+  fam.forEach((l,i)=>{
+    const p=byId[l.id]; const pay=p.price-(l.sel?selDisc(p.price):0)-(+l.combo||0);
+    const d=document.createElement('div'); d.className='frow';
+    d.innerHTML=`<span>${i+1}</span>
+      <select aria-label="통신사">${Object.entries(CARRIERS).map(([k,v])=>`<option value="${k}" ${k===l.c?'selected':''}>${v}</option>`).join('')}</select>
+      <select aria-label="요금제">${planOpts(l.c,l.id)}</select>
+      <select aria-label="나이">${AGES.map(([v,t])=>`<option value="${v}" ${v===l.age?'selected':''}>${t}</option>`).join('')}</select>
+      <label class="row" style="gap:6px"><input type="checkbox" ${l.sel?'checked':''} aria-label="선택약정"> 25%</label>
+      <input type="number" inputmode="numeric" min="0" step="100" value="${l.combo||''}" placeholder="0" aria-label="결합할인">
+      <span class="r num" style="font-weight:700">${won(pay)}${p.combo==='×'&&+l.combo?'<br><span class="warn" style="font-size:12px;font-weight:500">결합 불가 요금제</span>':''}</span>
+      <button class="btn ghost" aria-label="${i+1}회선 삭제" ${fam.length<2?'disabled':''}>✕</button>`;
+    const [sc,sp,sa]=d.querySelectorAll('select'); const [cb,cm]=d.querySelectorAll('input');
+    sc.onchange=()=>{l.c=sc.value; l.id=P.find(p=>p.c===l.c && p.price<=Math.max(byId[l.id].price,30000) )?.id||P.find(p=>p.c===l.c).id; renderFam()};
+    sp.onchange=()=>{l.id=sp.value;renderFam()};
+    sa.onchange=()=>{l.age=sa.value;renderFam()};
+    cb.onchange=()=>{l.sel=cb.checked;renderFam()};
+    cm.onchange=()=>{l.combo=cm.value;renderFam()};
+    d.querySelector('button').onclick=()=>{fam.splice(i,1);renderFam()};
+    box.appendChild(d);
+  });
+  let tot=0,base=0; const lines=[];
+  fam.forEach((l,i)=>{const p=byId[l.id]; const s=l.sel?selDisc(p.price):0; const pay=p.price-s-(+l.combo||0); tot+=pay; base+=p.price;
+    const ed=effData(p,l.age); const an=ageNote(p,l.age);
+    lines.push(`${i+1}. ${CARRIERS[p.c]} ${p.name}\n   데이터 ${p.dlab}${p.qos!=='-'?' (소진 후 '+p.qos+')':''}${an?' · '+an:''}\n   월 ${won(p.price)}${s?` − 선택약정 ${won(s)}`:''}${+l.combo?` − 결합 ${won(+l.combo)}`:''} = ${won(pay)}`)});
+  document.getElementById('famTotal').textContent=won(tot);
+  document.getElementById('famTotal24').textContent=won(tot*24);
+  document.getElementById('famSave').textContent=won(base-tot);
+  document.getElementById('famText').value=`[안산모바일 요금 상담 안내]\n\n${lines.join('\n\n')}\n\n월 예상 납부액 합계: ${won(tot)}\n(정가 대비 월 ${won(base-tot)} 절감, 24개월 ${won((base-tot)*24)})\n\n※ 부가세 포함, 단말 할부금 별도. 실제 금액은 개통 시 확인됩니다.\n문의 010-5508-5522`;
+}
+document.getElementById('addFam').onclick=()=>{const last=fam[fam.length-1]; fam.push({c:last?last.c:'LGU',id:last?last.id:'l-max',age:'gen',sel:true,combo:0});renderFam()};
+document.getElementById('copyBtn').onclick=async()=>{
+  const t=document.getElementById('famText');
+  try{await navigator.clipboard.writeText(t.value);toast('안내문을 복사했습니다')}
+  catch(e){t.select();try{document.execCommand('copy');toast('안내문을 복사했습니다')}catch(_){toast('직접 선택해서 복사하세요')}}
+};
+
+// ---------- 요금제표
+let fCar='ALL';
+function segButtons(el, opts, cur, cb){
+  el.innerHTML=opts.map(([v,t])=>`<button aria-pressed="${v===cur}" data-v="${v}">${t}</button>`).join('');
+  el.querySelectorAll('button').forEach(b=>b.onclick=()=>{el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));cb(b.dataset.v)});
+}
+segButtons(document.getElementById('carrierSeg'),[['ALL','전체'],['SKT','SKT'],['KT','KT'],['LGU','LG U+']],'ALL',v=>{fCar=v;renderList()});
+document.getElementById('sortSel').onchange=renderList; document.getElementById('q').oninput=renderList;
+function renderList(){
+  const q=document.getElementById('q').value.trim(); const asc=document.getElementById('sortSel').value==='asc';
+  const rows=P.filter(p=>(fCar==='ALL'||p.c===fCar)&&(!q||p.name.includes(q))).sort((a,b)=>asc?a.price-b.price:b.price-a.price);
+  const v = s => s==='확인'?'<span class="chk">확인</span>':s;
+  document.getElementById('planTable').innerHTML=`<thead><tr><th>통신사</th><th>요금제</th><th class="r">월정액</th><th class="r">선택약정 시</th><th class="r">24개월 할인</th><th>데이터</th><th>소진 후</th><th>테더링·공유</th><th>음성</th><th>문자</th><th>결합</th><th>혜택·메모</th></tr></thead><tbody>${
+    rows.map(p=>`<tr><td><span class="tag b-${p.c}">${CARRIERS[p.c]}</span></td><td style="font-weight:600;white-space:nowrap">${p.name}</td>
+    <td class="r num">${p.price.toLocaleString()}</td><td class="r num" style="font-weight:600">${(p.price-selDisc(p.price)).toLocaleString()}</td><td class="r num">${(selDisc(p.price)*24).toLocaleString()}</td>
+    <td style="white-space:nowrap">${p.dlab}</td><td>${p.qos}</td><td>${p.share}${p.c==='KT'&&p.verify?' <span class="chk">확인</span>':''}</td><td>${p.voice}</td><td>${v(p.sms)}</td>
+    <td>${p.combo==='×'?'<span class="warn">불가</span>':v(p.combo)}</td><td style="min-width:220px">${[p.perk,p.note].filter(Boolean).join(' · ')}${p.c!=='KT'&&p.verify?' <span class="chk">확인</span>':''}</td></tr>`).join('')}</tbody>`;
+}
+
+// ---------- 연령 혜택
+let aCar='SKT';
+segButtons(document.getElementById('ageSeg'),[['SKT','SKT'],['KT','KT'],['LGU','LG U+']],'SKT',v=>{aCar=v;renderAge()});
+const AGE_NOTES={
+  SKT:'베스트 5종은 청소년·청년 공유·테더링 +20GB. 청소년·청년은 커피·영화 월 1회, 로밍 연 2회 50% 할인. 시니어는 라이트 45·39와 T플랜 세이브에만 추가 혜택(라이트 45는 소진 후 1Mbps, 영상·부가 400분으로 상향).',
+  KT:'초이스 4종·베이직100·80은 공유데이터 배수, 나머지는 기본데이터 배수로 적용. 스쿨덤·65+덤·75+덤에는 안심박스 포함. 베이직600MB는 스쿨덤·75+덤 +400MB, 65+덤 +200MB, Y덤 없음.',
+  LGU:'플러스플랜 유쓰 고객은 공유데이터 60GB 추가. 시니어는 750MB·300MB에서 음성·문자 무제한으로 상향. 키즈(만 4~12세)는 구간별 제공량을 전산에서 확인하세요.'
+};
+function renderAge(){
+  const rows=P.filter(p=>p.c===aCar).sort((a,b)=>b.price-a.price);
+  const cell=(p,a)=>{ if(p.data===INF){const n=ageNote(p,a);return n||'-'} const e=effData(p,a); return e>p.data?`<b>${fmtGB(e)}</b>`:'-'; };
+  document.getElementById('ageTable').innerHTML=`<thead><tr><th>요금제</th><th class="r">월정액</th><th>일반</th><th>청소년</th><th>청년</th><th>시니어 65~74</th><th>시니어 75~</th></tr></thead><tbody>${
+    rows.map(p=>`<tr><td style="font-weight:600;white-space:nowrap">${p.name}</td><td class="r num">${p.price.toLocaleString()}</td><td>${p.dlab}</td><td>${cell(p,'teen')}</td><td>${cell(p,'youth')}</td><td>${cell(p,'s65')}</td><td>${cell(p,'s75')}</td></tr>`).join('')}</tbody>`;
+  document.getElementById('ageNote').textContent=AGE_NOTES[aCar];
+}
+
+
+// ---------- 휴대폰 구매
+let bCar='LGU';
+const $=id=>document.getElementById(id);
+$('bAge').innerHTML=AGES.map(([v,t])=>`<option value="${v}">${t}</option>`).join('');
+function fillPlans(){
+  const opts=P.filter(p=>p.c===bCar).map(p=>`<option value="${p.id}">${p.name} · ${p.price.toLocaleString()}원</option>`).join('');
+  $('bPlanA').innerHTML=opts; $('bPlanB').innerHTML=opts;
+  const list=P.filter(p=>p.c===bCar);
+  const hi=list.filter(p=>p.data===INF).sort((a,b)=>a.price-b.price)[0]||list[0];
+  const mid=list.filter(p=>p.price<=63000&&p.price>=55000).sort((a,b)=>b.price-a.price)[0]||list[list.length-1];
+  $('bPlanA').value=hi.id; $('bPlanB').value=mid.id;
+}
+document.querySelectorAll('#buyCar button').forEach(b=>b.onclick=()=>{
+  bCar=b.dataset.c; document.querySelectorAll('#buyCar button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  fillPlans(); calcBuy();
+
+});
+function card(p){const age=$('bAge').value; const an=ageNote(p,age);
+  return `<b>${p.name}</b> 월 ${won(p.price)}<br>데이터 ${p.dlab}${p.qos!=='-'?' + 소진 후 '+p.qos:''}${an?' · '+an:''} · 테더링 ${p.share}${p.perk?'<br>'+p.perk:''}${p.combo==='×'?'<br><span class="warn">결합할인 불가 요금제</span>':''}`}
+function inst(principal, n, ratePct){
+  if(n===0||principal<=0) return 0;
+  const r=ratePct/100/12; if(r===0) return principal/n;
+  return principal*r/(1-Math.pow(1+r,-n));
+}
+function welfare(afterSel){
+  const t=$('bWelf').value;
+  if(t==='p35') return Math.floor(afterSel*0.35/10)*10;
+  if(t==='manual') return +$('bWelfAmt').value||0;
+  return 0;
+}
+function phaseCalc(p, useSel){
+  const sel=useSel?selDisc(p.price):0;
+  const combo=p.combo==='×'?0:(+$('bCombo').value||0);
+  const wf=welfare(p.price-sel);
+  const etc=+$('bEtc').value||0;
+  const fee=Math.max(0,p.price-sel-combo-wf-etc);
+  return {sel,combo,wf,etc,fee};
+}
+const WD=['일','월','화','수','목','금','토'];
+const holdDays=m=>({3:93,6:183}[m] ?? Math.round(m*30.5));
+const addDays=(d,n)=>{const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()+n);return x};
+const fmtD=d=>`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}(${WD[d.getDay()]})`;
+function openDate(){const v=$('sOpen')&&$('sOpen').value; if(v){const [y,mo,d]=v.split('-').map(Number); return new Date(y,mo-1,d)} return new Date()}
+function calcBuy(){
+  const A=byId[$('bPlanA').value], B=byId[$('bPlanB').value];
+  $('bCardA').innerHTML=card(A); $('bCardB').innerHTML=card(B);
+  $('bWelfAmt').disabled=$('bWelf').value!=='manual';
+  const price=+$('bPrice').value||0, n=+$('bMonths').value, rate=+$('bRate').value||0;
+  const methods=[
+    {key:'s',name:'이통사지원금',hold:+$('bHoldS').value||0,useSel:false,sub:+$('bSub').value||0,add:+$('bAddS').value||0},
+    {key:'y',name:'선택약정 25%',hold:+$('bHoldY').value||0,useSel:true,sub:0,add:+$('bAddY').value||0},
+  ].map(m=>{
+    const principal=Math.max(0,price-m.sub-m.add);
+    const dev=Math.round(inst(principal,n,rate));
+    const a=phaseCalc(A,m.useSel), b=phaseCalc(B,m.useSel);
+    const months=24, h=Math.min(m.hold,months);
+    const today=openDate(), days=holdDays(m.hold), chg=addDays(today,days), last=addDays(today,days-1);
+    const devTotal = n===0? principal : dev*Math.min(n,months);
+    const total24=(a.fee*h)+(b.fee*(months-h))+devTotal;
+    return {...m,principal,dev,a,b,h,total24,days,chg,last,today};
+  });
+  const minT=Math.min(...methods.map(m=>m.total24));
+  buyState={A,B,methods,minT,price,n};
+  const brk=(x,dev)=>`<div class="brk"><span>요금</span><span>${won(x.p.price)}</span>
+    ${x.sel?`<span>선택약정</span><span>−${won(x.sel)}</span>`:''}${x.combo?`<span>결합할인</span><span>−${won(x.combo)}</span>`:''}
+    ${x.wf?`<span>복지할인</span><span>−${won(x.wf)}</span>`:''}${x.etc?`<span>기타할인</span><span>−${won(x.etc)}</span>`:''}
+    <span>휴대폰 할부금</span><span>${dev?'+'+won(dev):'없음'}</span></div>`;
+  $('bResult').innerHTML=methods.map(m=>{
+    const fa={...m.a,p:A}, fb={...m.b,p:B};
+    return `<div class="rcol ${m.total24===minT?'win':''}">
+      <h3>${m.name} <span class="win-flag">· 24개월 총액이 더 저렴</span></h3>
+      <div class="muted">할부원금 ${won(m.principal)} (출고가 ${won(price)}${m.sub?` − 공시 ${won(m.sub)}`:''}${m.add?` − 추가 ${won(m.add)}`:''})${n?` · ${n}개월 월 ${won(m.dev)}`:' · 일시불'}</div>
+      <div class="phase"><div class="when">${fmtD(m.today)} ~ ${fmtD(m.last)} (${m.days}일) · ${A.name}</div>
+        <div class="amt num">${(m.a.fee+m.dev).toLocaleString('ko-KR')}<small>원/월</small></div>${brk(fa,m.dev)}</div>
+      <div class="phase"><div class="when"><span style="color:var(--brand);font-weight:700">${fmtD(m.chg)}부터 요금제 변경 가능</span> · ${B.name}${m.useSel?' (선택약정 유지)':''}</div>
+        <div class="amt num">${(m.b.fee+m.dev).toLocaleString('ko-KR')}<small>원/월</small></div>${brk(fb,m.dev)}</div>
+      <div class="sum24"><span>24개월 총 부담 (요금+기기)</span><span class="v num">${won(m.total24)}</span></div>
+    </div>`}).join('');
+  const w=[];
+  if(B.price<A.price && ['l-5','l-15','l-075','l-03'].includes(B.id)) w.push('LG U+ 데이터플랜 300MB~5GB로 내리면 지원금 개통 고객은 차액정산금이 청구될 수 있습니다. 이 경우 선택약정을 권하세요.');
+  if(A.combo==='×'||B.combo==='×') w.push('결합할인 불가 요금제 구간은 결합할인을 0원으로 계산했습니다.');
+  if(B.price<A.price) w.push('요금제 하향 시 통신사별 차액정산·하향 제한 기준을 정책표에서 확인하세요.');
+  $('bWarn').textContent=w.join(' ');
+  const age=$('bAge').value;
+  $('bText').value=`[안산모바일 휴대폰 구매 상담]\n작성일: ${fmtD(new Date())}\n\n통신사: ${CARRIERS[bCar]}\n개통 요금제: ${A.name} (월 ${won(A.price)}, ${A.dlab})\n이후 요금제: ${B.name} (월 ${won(B.price)}, ${B.dlab})\n휴대폰 출고가: ${won(price)} / 할부 ${n?n+'개월':'일시불'}\n\n`+
+    methods.map(m=>`■ ${m.name}${m.total24===minT?' (추천)':''}\n - 할부원금 ${won(m.principal)}${n?`, 월 할부금 ${won(m.dev)}`:''}\n - 요금제 변경 가능일: ${fmtD(m.chg)} (오늘부터 ${m.days}일 후)\n - ${fmtD(m.today)} ~ ${fmtD(m.last)}: ${A.name} 월 ${won(m.a.fee+m.dev)}\n - ${fmtD(m.chg)}부터: ${B.name} 월 ${won(m.b.fee+m.dev)}\n - 24개월 총 부담: ${won(m.total24)}`).join('\n\n')+
+    `\n\n※ 부가세 포함 예상 금액이며 실제 금액은 개통 시 확인됩니다.\n문의 010-5508-5522`;
+}
+['bCust','bModel','bPlanA','bPlanB','bHoldS','bHoldY','bAge','bPrice','bSub','bAddS','bAddY','bMonths','bRate','bCombo','bWelf','bWelfAmt','bEtc'].forEach(id=>{$(id).addEventListener('input',calcBuy);$(id).addEventListener('change',calcBuy)});
+
+// ---------- 이미지 저장
+let buyState=null, imgBlob=null, downloadsNS;
+const dlReady = (window.claude && window.claude.use) ? window.claude.use('downloads').then(ns=>{downloadsNS=ns;return ns}).catch(()=>null) : Promise.resolve(null);
+const CCOL={SKT:'#E8541B',KT:'#E60012',LGU:'#D6006F'};
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+const FF='"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif';
+function f(ctx,w,s){ctx.font=`${w} ${s}px ${FF}`}
+function wrap(ctx,text,x,y,maxW,lh){let line='';for(const ch of text){if(ctx.measureText(line+ch).width>maxW){ctx.fillText(line,x,y);y+=lh;line=ch}else line+=ch}ctx.fillText(line,x,y);return y+lh}
+async function drawCard(){
+  try{await document.fonts.ready}catch(e){}
+  const s=buyState; const W=1080, H=1730, S=2;
+  const cv=document.createElement('canvas'); cv.width=W*S; cv.height=H*S;
+  const ctx=cv.getContext('2d'); ctx.scale(S,S); ctx.textBaseline='alphabetic';
+  const ink='#16211D', sub='#5B6A64', line='#DCE3E0', brand='#0E8C7B', cc=CCOL[bCar];
+  ctx.fillStyle='#F3F6F5'; ctx.fillRect(0,0,W,H);
+  // header
+  ctx.fillStyle=brand; ctx.fillRect(0,0,W,170);
+  ctx.fillStyle='#fff'; f(ctx,700,30); ctx.fillText('안산모바일',60,70);
+  f(ctx,700,46); ctx.fillText('휴대폰 구매 월 요금 안내',60,132);
+  const d=new Date(); f(ctx,500,22); ctx.textAlign='right';
+  ctx.fillText(`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} 상담`,W-60,70);
+  const cust=$('bCust').value.trim(); if(cust){f(ctx,600,26);ctx.fillText(cust,W-60,132)}
+  ctx.textAlign='left';
+  // info panel
+  let y=210; ctx.fillStyle='#fff'; rr(ctx,40,y,W-80,300,18); ctx.fill();
+  ctx.fillStyle=cc; rr(ctx,70,y+34,CARRIERS[bCar].length*22+40,46,23); ctx.fill();
+  ctx.fillStyle='#fff'; f(ctx,700,24); ctx.fillText(CARRIERS[bCar],90,y+66);
+  ctx.fillStyle=ink; f(ctx,700,32); ctx.fillText($('bModel').value.trim()||'휴대폰',90+CARRIERS[bCar].length*22+50,y+68);
+  f(ctx,500,22); ctx.fillStyle=sub;
+  ctx.fillText(`출고가 ${won(s.price)} · ${s.n?s.n+'개월 할부':'일시불'}`,70,y+120);
+  const pl=(lab,p,yy)=>{ctx.fillStyle=sub;f(ctx,500,21);ctx.fillText(lab,70,yy);ctx.fillStyle=ink;f(ctx,700,27);ctx.fillText(p.name,250,yy);
+    f(ctx,500,21);ctx.fillStyle=sub;ctx.fillText(`월 ${won(p.price)} · 데이터 ${p.dlab}${p.qos!=='-'?' + '+p.qos:''}`,250,yy+32)};
+  ctx.strokeStyle=line;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(70,y+150);ctx.lineTo(W-70,y+150);ctx.stroke();
+  pl('개통 요금제',s.A,y+192); pl('이후 요금제',s.B,y+258);
+  // two columns
+  y=550; const cw=(W-80-24)/2;
+  s.methods.forEach((m,i)=>{
+    const x=40+i*(cw+24), win=m.total24===s.minT;
+    ctx.fillStyle='#fff'; rr(ctx,x,y,cw,700,18); ctx.fill();
+    if(win){ctx.strokeStyle=brand;ctx.lineWidth=4;rr(ctx,x+2,y+2,cw-4,696,16);ctx.stroke();
+      ctx.fillStyle=brand;rr(ctx,x+cw-130,y+28,100,40,20);ctx.fill();ctx.fillStyle='#fff';f(ctx,700,21);ctx.textAlign='center';ctx.fillText('추천',x+cw-80,y+55);ctx.textAlign='left'}
+    const px=x+30;
+    ctx.fillStyle=ink; f(ctx,700,32); ctx.fillText(m.name,px,y+60);
+    ctx.fillStyle=sub; f(ctx,500,20);
+    ctx.fillText(`할부원금 ${won(m.principal)}`,px,y+100);
+    ctx.fillText(s.n?`월 할부금 ${won(m.dev)} 포함`:'일시불 (할부금 없음)',px,y+128);
+    const ph=(yy,label,fee,dl)=>{
+      ctx.strokeStyle=line;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(px,yy);ctx.lineTo(x+cw-30,yy);ctx.stroke();
+      ctx.fillStyle=sub;f(ctx,600,21);wrap(ctx,label,px,yy+40,cw-60,26);
+      if(dl){ctx.fillStyle=brand;f(ctx,700,22);ctx.fillText(dl,px,yy+72)}
+      ctx.fillStyle=ink;f(ctx,700,58);const t=(fee+m.dev).toLocaleString('ko-KR');ctx.fillText(t,px,yy+130);
+      const tw=ctx.measureText(t).width;f(ctx,600,24);ctx.fillText('원/월',px+tw+8,yy+130);
+    };
+    ph(y+160,s.A.name,m.a.fee,`${fmtD(m.today).slice(2)} ~ ${fmtD(m.last).slice(2)}`);
+    ph(y+330,s.B.name+(m.useSel?' (약정할인 유지)':''),m.b.fee,`${fmtD(m.chg)}부터 변경 가능`);
+    // discounts summary
+    const dl=[]; if(m.useSel)dl.push('선택약정 25%'); else if(m.sub)dl.push(`공시지원금 ${won(m.sub)}`);
+    if(m.add)dl.push(`추가지원금 ${won(m.add)}`); if(m.a.combo)dl.push('결합할인'); if(m.a.wf)dl.push('복지할인'); if(m.a.etc)dl.push('기타할인');
+    ctx.fillStyle=sub;f(ctx,500,19);wrap(ctx,'적용: '+(dl.join(', ')||'없음'),px,y+510,cw-60,26);
+    ctx.fillStyle=win?'#E6F4F1':'#F3F6F5'; rr(ctx,x+16,y+590,cw-32,90,12); ctx.fill();
+    ctx.fillStyle=sub;f(ctx,600,20);ctx.fillText('24개월 총 부담',px,y+628);
+    ctx.fillStyle=ink;f(ctx,700,32);ctx.fillText(won(m.total24),px,y+664);
+  });
+  // change-date schedule
+  y=1275; ctx.fillStyle='#fff'; rr(ctx,40,y,W-80,150,18); ctx.fill();
+  ctx.fillStyle=ink; f(ctx,700,26); ctx.fillText('요금제 변경 가능일',70,y+48);
+  s.methods.forEach((m,i)=>{const x=70+i*((W-140)/2);
+    ctx.fillStyle=sub; f(ctx,600,20); ctx.fillText(`${m.name} (${m.days}일 유지)`,x,y+88);
+    ctx.fillStyle=brand; f(ctx,700,30); ctx.fillText(fmtD(m.chg),x,y+126);});
+  // diff line
+  y=1475; const [a,b]=s.methods; const diff=Math.abs(a.total24-b.total24); const better=a.total24<=b.total24?a:b;
+  ctx.fillStyle=ink; f(ctx,700,28); ctx.textAlign='center';
+  ctx.fillText(diff?`${better.name} 방식이 24개월 동안 ${won(diff)} 더 저렴합니다`:'두 방식의 24개월 총 부담이 같습니다',W/2,y);
+  ctx.textAlign='left';
+  // footer
+  ctx.fillStyle=sub; f(ctx,500,19);
+  let fy=wrap(ctx,'※ 부가세 포함 예상 금액입니다. 실제 청구 금액은 개통 시 전산 기준으로 확정되며, 지원금·할인 조건은 통신사 정책에 따라 달라질 수 있습니다.',60,y+60,W-120,28);
+  ctx.fillStyle=brand; ctx.fillRect(0,H-110,W,110);
+  ctx.fillStyle='#fff'; f(ctx,700,26); ctx.fillText('안산모바일 고객센터 010-5508-5522',60,H-62);
+  f(ctx,500,20); ctx.fillText('직통 010-8263-5588 · 월~토 10:00~19:00 (일요일 휴무)',60,H-28);
+  return new Promise(res=>cv.toBlob(b=>res(b),'image/png'));
+}
+async function openImg(){
+  if(!buyState){toast('먼저 요금을 계산하세요');return}
+  imgBlob=await drawCard();
+  const img=$('imgPrev'); if(img.src.startsWith('blob:')) URL.revokeObjectURL(img.src);
+  img.src=URL.createObjectURL(imgBlob);
+  const ns=await Promise.race([dlReady,new Promise(r=>setTimeout(()=>r(downloadsNS??null),1500))]);
+  $('imgSave').hidden=!ns;
+  $('imgHint').textContent=ns?'저장 후 카톡·문자에 첨부하세요':'이미지를 길게 누르거나 우클릭해서 저장하세요';
+  $('imgModal').hidden=false; $('imgSave').focus();
+}
+$('bImg').onclick=openImg;
+$('imgClose').onclick=()=>{$('imgModal').hidden=true};
+$('imgModal').addEventListener('click',e=>{if(e.target.id==='imgModal')$('imgModal').hidden=true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('imgModal').hidden=true});
+$('imgSave').onclick=async()=>{
+  const ns=downloadsNS; if(!ns||!imgBlob)return;
+  const d=new Date(); const name=`요금안내_${CARRIERS[bCar].replace(/\s/g,'')}_${d.getMonth()+1}${String(d.getDate()).padStart(2,'0')}.png`;
+  try{await ns.save({filename:name,data:imgBlob});toast('이미지를 저장했습니다')}
+  catch(e){ if(e&&e.code==='declined') return; if(e&&e.code==='rate_limited'){toast('잠시 후 다시 눌러주세요');return}
+    $('imgSave').hidden=true; $('imgHint').textContent='이미지를 길게 누르거나 우클릭해서 저장하세요'; }
+};
+
+$('bCopy').onclick=async()=>{const t=$('bText');try{await navigator.clipboard.writeText(t.value);toast('안내문을 복사했습니다')}catch(e){t.select();try{document.execCommand('copy');toast('안내문을 복사했습니다')}catch(_){toast('직접 선택해서 복사하세요')}}};
+fillPlans(); calcBuy();
+
+// ---------- 단말 카탈로그
+let BUILTIN=[
+ {id:'s26-256',name:'갤럭시 S26 256GB',price:1403600},
+ {id:'s26p-256',name:'갤럭시 S26+ 256GB',price:1601600},
+ {id:'s26u-256',name:'갤럭시 S26 Ultra 256GB',price:1947000},
+ {id:'s26u-1t',name:'갤럭시 S26 Ultra 1TB',price:2821500},
+ {id:'zf8u-256',name:'갤럭시 Z 폴드8 울트라 256GB',price:2577300},
+ {id:'zf8u-512',name:'갤럭시 Z 폴드8 울트라 512GB',price:2830300},
+ {id:'zf8u-1t',name:'갤럭시 Z 폴드8 울트라 1TB',price:3451800},
+ {id:'zf8-256',name:'갤럭시 Z 폴드8 256GB',price:2278100},
+ {id:'zf8-512',name:'갤럭시 Z 폴드8 512GB',price:2531100},
+ {id:'zf8-1t',name:'갤럭시 Z 폴드8 1TB',price:3152600},
+ {id:'zfl8-256',name:'갤럭시 Z 플립8 256GB',price:1683000},
+ {id:'zfl8-512',name:'갤럭시 Z 플립8 512GB',price:1936000},
+ {id:'ip18p-256',name:'아이폰 18 프로 256GB',price:1990000},
+ {id:'ip18pm-256',name:'아이폰 18 프로맥스 256GB',price:2190000},
+ {id:'ipduo',name:'아이폰 듀오 (10/23 출시, 가격 확인)',price:3290000},
+].map(d=>({...d,subsidy:{SKT:{},KT:{},LGU:{}},builtin:true}));
+let devRemote={};
+let devDB=null;
+const LS_KEY='devices_v1';
+function devices(){
+  const map={}; BUILTIN.forEach(d=>map[d.id]=d);
+  Object.entries(devRemote).forEach(([id,d])=>{ map[id]={...(map[id]||{}),...d,id}; });
+  return Object.values(map).filter(d=>!d.hidden).sort((a,b)=>a.name.localeCompare(b.name,'ko'));
+}
+const devById=id=>devices().find(d=>d.id===id);
+const norm=s=>(s||'').toLowerCase().replace(/\s+/g,'').replace(/플러스/g,'+').replace(/울트라/g,'ultra');
+function matchDev(q){const n=norm(q); return devices().filter(d=>!n||norm(d.name).includes(n)||norm(d.name).replace(/갤럭시|아이폰/g,'').includes(n)); }
+function lookupSub(dev,c,plan){
+  const t=(dev.subsidy||{})[c]||{};
+  if(t[plan.id]!=null && t[plan.id]!=='') return {amt:+t[plan.id],from:plan};
+  const cands=P.filter(p=>p.c===c && t[p.id]!=null && t[p.id]!=='' && p.price<=plan.price).sort((a,b)=>b.price-a.price);
+  if(cands[0]) return {amt:+t[cands[0].id],from:cands[0]};
+  return null;
+}
+async function saveDev(d){
+  const body={name:d.name,price:+d.price||0,subsidy:d.subsidy||{SKT:{},KT:{},LGU:{}},hidden:!!d.hidden,updated:new Date().toISOString()};
+  devRemote[d.id]=body;
+  if(devDB){ try{ await devDB.collection('devices').doc(d.id).set(body); return true }catch(e){ toast('저장 실패: '+(e&&e.code||'오류')); return false } }
+  try{localStorage.setItem(LS_KEY,JSON.stringify(devRemote))}catch(e){}
+  return true;
+}
+let selDev=null, comboIdx=-1;
+const mIn=$('bModel'), mList=$('bModelList');
+function showList(){
+  const items=matchDev(mIn.value).slice(0,30);
+  mList.innerHTML=items.length?items.map((d,i)=>`<li role="option" id="opt-${d.id}" data-id="${d.id}" aria-selected="${i===comboIdx}">${d.name}<span>${d.price.toLocaleString()}원</span></li>`).join(''):'<li style="cursor:default;color:var(--sub)">찾는 기종이 없습니다. 단말 관리에서 추가하세요</li>';
+  mList.hidden=false; mIn.setAttribute('aria-expanded','true');
+  mList.querySelectorAll('li[data-id]').forEach(li=>li.onmousedown=e=>{e.preventDefault();pickDev(li.dataset.id)});
+}
+function hideList(){mList.hidden=true;mIn.setAttribute('aria-expanded','false');comboIdx=-1}
+function pickDev(id){
+  selDev=devById(id); if(!selDev) return;
+  mIn.value=selDev.name; hideList();
+  $('bPrice').value=selDev.price; autoSub(); calcBuy();
+}
+function autoSub(){
+  const hint=$('bSubHint');
+  if(!selDev){hint.textContent='';return}
+  const plan=byId[$('bPlanA').value]; const r=lookupSub(selDev,bCar,plan);
+  if(r){ $('bSub').value=r.amt; hint.textContent = r.from.id===plan.id ? `공시지원금: ${CARRIERS[bCar]} ${plan.name} 기준` : `공시지원금: ${r.from.name} 구간 금액 적용 (확인 필요)`; }
+  else { $('bSub').value=0; hint.textContent=`${CARRIERS[bCar]} 공시지원금 미등록 · 단말 관리에서 입력하세요`; }
+}
+mIn.addEventListener('focus',()=>{comboIdx=-1;showList()});
+mIn.addEventListener('input',()=>{selDev=null;comboIdx=-1;showList();$('bSubHint').textContent=''});
+mIn.addEventListener('blur',()=>setTimeout(hideList,120));
+mIn.addEventListener('keydown',e=>{
+  const opts=[...mList.querySelectorAll('li[data-id]')]; if(mList.hidden||!opts.length) return;
+  if(e.key==='ArrowDown'){e.preventDefault();comboIdx=Math.min(comboIdx+1,opts.length-1)}
+  else if(e.key==='ArrowUp'){e.preventDefault();comboIdx=Math.max(comboIdx-1,0)}
+  else if(e.key==='Enter'){e.preventDefault();pickDev((opts[comboIdx]||opts[0]).dataset.id);return}
+  else if(e.key==='Escape'){hideList();return} else return;
+  opts.forEach((o,i)=>o.setAttribute('aria-selected',i===comboIdx)); if(opts[comboIdx]) opts[comboIdx].scrollIntoView({block:'nearest'});
+  mIn.setAttribute('aria-activedescendant',opts[comboIdx]?opts[comboIdx].id:'');
+});
+$('bPlanA').addEventListener('change',()=>{autoSub();calcBuy()});
+document.querySelectorAll('#buyCar button').forEach(b=>b.addEventListener('click',()=>{autoSub();calcBuy()}));
+
+let editId=null, editCar='LGU', draft=null;
+function renderDevList(){
+  const items=matchDev($('devQ').value);
+  $('devList').innerHTML=items.map(d=>{const n=['SKT','KT','LGU'].reduce((s,c)=>s+Object.keys((d.subsidy||{})[c]||{}).length,0);
+    return `<li><button data-id="${d.id}" aria-current="${d.id===editId}"><span>${d.name}</span><small>${n?'지원금 '+n+'건':'지원금 없음'}</small></button></li>`}).join('');
+  $('devList').querySelectorAll('button').forEach(b=>b.onclick=()=>{editId=b.dataset.id;renderDevList();renderDevEdit()});
+}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+function renderDevEdit(){
+  const box=$('devEdit'); const d=editId&&devById(editId);
+  if(!d){box.innerHTML='<p class="muted">왼쪽에서 기종을 고르거나 새로 추가하세요.</p>';return}
+  const t=(d.subsidy||{})[editCar]||{};
+  box.innerHTML=`<div class="fields"><label class="field">기종명<input type="text" id="deName" value="${esc(d.name)}"></label>
+    <label class="field">출고가<input type="number" id="dePrice" value="${d.price}" step="100" inputmode="numeric"></label></div>
+    <div class="row" style="margin:14px 0 8px;justify-content:space-between"><b>공시지원금</b><div class="seg" id="deSeg"></div></div>
+    <p class="muted" style="margin:0 0 8px">받는 요금제만 입력해도 됩니다. 빈 요금제는 그보다 저렴한 요금제 중 가장 가까운 입력값을 씁니다.</p>
+    <div class="subgrid">${P.filter(p=>p.c===editCar).map(p=>`<span>${p.name} <small class="muted">${p.price.toLocaleString()}</small></span><input type="number" data-pid="${p.id}" value="${t[p.id]??''}" step="1000" inputmode="numeric" placeholder="-" aria-label="${p.name} 공시지원금">`).join('')}</div>
+    <div class="row" style="margin-top:14px;justify-content:space-between">
+      <button class="btn ghost warn" id="deDel">기종 삭제</button>
+      <span class="row"><span class="muted">${d.updated?'마지막 수정 '+new Date(d.updated).toLocaleString('ko-KR'):''}</span><button class="btn primary" id="deSave">저장</button></span></div>`;
+  const collect=()=>{ const nd={...d,subsidy:JSON.parse(JSON.stringify(d.subsidy||{SKT:{},KT:{},LGU:{}}))};
+    nd.name=$('deName').value.trim()||d.name; nd.price=+$('dePrice').value||0;
+    const tt={}; box.querySelectorAll('input[data-pid]').forEach(i=>{if(i.value!=='')tt[i.dataset.pid]=+i.value}); nd.subsidy[editCar]=tt; return nd; };
+  segButtons($('deSeg'),[['SKT','SKT'],['KT','KT'],['LGU','LG U+']],editCar,v=>{draft=collect(); devRemote[draft.id]={...(devRemote[draft.id]||{}),...draft}; editCar=v; renderDevEdit()});
+  $('deSave').onclick=async()=>{const nd=collect(); if(await saveDev(nd)){toast('저장했습니다'); renderDevList(); renderDevEdit(); if(selDev&&selDev.id===nd.id){selDev=devById(nd.id);autoSub();calcBuy()}}};
+  $('deDel').onclick=async()=>{ if(!confirm(`${d.name}을(를) 목록에서 삭제할까요?`))return; await saveDev({...d,hidden:true}); editId=null; renderDevList(); renderDevEdit(); toast('삭제했습니다'); };
+}
+$('devQ').oninput=renderDevList;
+$('devNew').onclick=async()=>{const id='d'+Date.now().toString(36); await saveDev({id,name:'새 기종',price:0,subsidy:{SKT:{},KT:{},LGU:{}}}); editId=id; renderDevList(); renderDevEdit(); $('deName').select();};
+$('bulkBtn').onclick=async()=>{
+  const lines=$('bulkIn').value.split(/\r?\n/).map(l=>l.split('\t').length>1?l.split('\t'):l.split(',')).map(a=>a.map(s=>s.trim())).filter(a=>a.length>=2&&a[0]);
+  const cmap={'SKT':'SKT','SK':'SKT','KT':'KT','LGU':'LGU','LG':'LGU','LGU+':'LGU','LGU+':'LGU','유플러스':'LGU'};
+  const touched={}; let ok=0; const bad=[];
+  for(const [name,price,car,planName,amt] of lines){
+    let d=touched[norm(name)] || devices().find(x=>norm(x.name)===norm(name));
+    if(!d) d={id:'d'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),name,price:0,subsidy:{SKT:{},KT:{},LGU:{}}};
+    d={...d,subsidy:JSON.parse(JSON.stringify(d.subsidy||{SKT:{},KT:{},LGU:{}}))};
+    ['SKT','KT','LGU'].forEach(c=>d.subsidy[c]=d.subsidy[c]||{});
+    const pr=+String(price||'').replace(/[^\d]/g,''); if(pr) d.price=pr;
+    if(car&&planName){ const c=cmap[String(car).toUpperCase().replace(/\s/g,'')]||cmap[car]; const pl=P.find(p=>p.c===c&&norm(p.name)===norm(planName));
+      if(c&&pl&&amt!==undefined&&amt!==''){ d.subsidy[c][pl.id]=+String(amt).replace(/[^\d]/g,''); ok++; } else bad.push(`${name} ${car} ${planName}`); }
+    touched[norm(name)]=d;
+  }
+  for(const d of Object.values(touched)) await saveDev(d);
+  $('bulkMsg').textContent=`${Object.keys(touched).length}개 기종, 지원금 ${ok}건 반영${bad.length?` · 요금제명을 찾지 못한 줄 ${bad.length}개: ${bad.slice(0,3).join(', ')}${bad.length>3?' 외':''}`:''}`;
+  renderDevList(); renderDevEdit();
+};
+try{devRemote=JSON.parse(localStorage.getItem(LS_KEY)||'{}')}catch(e){devRemote={}}
+$('devStore').textContent='공유 저장소 연결 확인 중…';
+renderDevList(); renderDevEdit();
+if(window.claude&&window.claude.use){
+  window.claude.use('db').then(db=>{
+    if(!db){$('devStore').textContent='공유 저장소를 쓸 수 없어 이 기기에만 저장됩니다. 다른 패드에는 반영되지 않습니다.';return}
+    devDB=db; $('devStore').textContent='입력한 내용은 이 링크를 여는 모든 기기에 공유됩니다.';
+    db.collection('devices').onSnapshot(snap=>{
+      const m={}; (snap.docs||[]).forEach(s=>{m[s.id]=s.data()}); devRemote=m;
+      renderDevList(); if(editId) renderDevEdit();
+      if(selDev){selDev=devById(selDev.id)||null; autoSub(); calcBuy();}
+    },()=>{$('devStore').textContent='공유 저장소 연결이 끊겼습니다. 새로고침하세요.'});
+  }).catch(()=>{$('devStore').textContent='이 기기에만 저장됩니다.'});
+} else { $('devStore').textContent='이 기기에만 저장됩니다.'; }
+
+// ---------- 판매일보 · 출력 · 구글 시트 연동
+const GAS = (typeof google!=='undefined' && google.script && google.script.run) ? google.script.run : null;
+const gas=(fn,...a)=>new Promise((res,rej)=>GAS.withSuccessHandler(res).withFailureHandler(rej)[fn](...a));
+let VENDORS=[{name:'LG-A',c:'LGU'},{name:'LG-성연남부',c:'LGU'},{name:'SK-도매A',c:'SKT'},{name:'KT-에이탑',c:'KT'},{name:'KT-B',c:'KT'}];
+let LISTS={'2nd번들':['워치','탭','워치+탭','에어팟'],
+ '부가서비스':['필수팩L','우주패스(OTT)','마이스마트콜3','디즈니플러스 스탠다드','디즈니플러스 프리미엄','티빙 베이직','티빙 스탠다드','티빙 프리미엄','유튜브프리미엄 메가커피','유튜브프리미엄 생활구독','유튜브프리미엄 롯데시네마','딥엘','모아진','콴다 Lite','콴다 프리미엄','001 FREE'],
+ '보험':['365폰케어','T ALL케어플러스6','U+ 폰케어','없음'],'제휴카드':['KT 할부카드(SAVE)','KT DC/체크카드','SKT 제휴카드','LG U+ 제휴카드'],
+ '결합종류':['SKT 유무선 동시판매','KT 010 결합','LG 참 쉬운 가족 결합','기타 결합']};
+let sMethod='auto', sType='MNP', s2nd='', sAddon=new Set();
+const pad2=n=>String(n).padStart(2,'0'); const ymd=d=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+$('sOpen').value=ymd(new Date());
+function fillSaleLists(){
+  const opt=(arr,blank)=>(blank?`<option value="">${blank}</option>`:'')+arr.map(v=>`<option>${esc(v)}</option>`).join('');
+  $('sIns').innerHTML=opt(LISTS['보험'].filter(x=>x!=='없음'),'없음');
+  $('sCard').innerHTML=opt(LISTS['제휴카드'],'없음');
+  $('sBundle').innerHTML=opt(LISTS['결합종류'],'선택');
+  segButtons($('s2nd'),[['','없음'],...LISTS['2nd번들'].map(v=>[v,v])],s2nd,v=>{s2nd=v});
+  $('sAddon').innerHTML=LISTS['부가서비스'].map(v=>`<button type="button" aria-pressed="${sAddon.has(v)}">${esc(v)}</button>`).join('');
+  $('sAddon').querySelectorAll('button').forEach(b=>b.onclick=()=>{const v=b.textContent; sAddon.has(v)?sAddon.delete(v):sAddon.add(v); b.setAttribute('aria-pressed',sAddon.has(v))});
+  fillVendors();
+}
+function fillVendors(){
+  const list=VENDORS.filter(v=>v.c===bCar); const cur=$('sVendor').value;
+  $('sVendor').innerHTML=list.length?list.map(v=>`<option>${esc(v.name)}</option>`).join(''):'<option value="">거래처 없음</option>';
+  if(list.some(v=>v.name===cur)) $('sVendor').value=cur;
+}
+segButtons($('sType'),[['신규','신규'],['MNP','번호이동'],['기변','기변']],sType,v=>{sType=v});
+function renderMethodSeg(){ segButtons($('sMethod'),[['s','이통사지원금'],['y','선택약정']],chosenKey(),v=>{sMethod=v}); }
+function chosenKey(){ if(sMethod!=='auto') return sMethod; if(!buyState) return 's'; const w=buyState.methods.find(m=>m.total24===buyState.minT); return w?w.key:'s'; }
+document.querySelectorAll('#buyCar button').forEach(b=>b.addEventListener('click',fillVendors));
+['bCust','bPlanA','bPlanB','bPrice','bSub','bAddS','bAddY','bHoldS','bHoldY'].forEach(id=>$(id).addEventListener('change',()=>{ if(sMethod==='auto') renderMethodSeg(); }));
+$('sOpen').addEventListener('change',calcBuy);
+
+function buildSale(){
+  const s=buyState; const k=chosenKey(); const m=s.methods.find(x=>x.key===k);
+  return {
+    '개통일':$('sOpen').value,'고객이름':$('bCust').value.trim(),'휴대폰번호':$('sPhone').value.trim(),'구매기종':$('bModel').value.trim(),
+    '일련번호':$('sSerial').value.trim(),'생년월일':$('sBirth').value,'공시/선약':k==='s'?'공시':'선약',
+    '공시지원금':k==='s'?(+$('bSub').value||0):'','추가지원금':m.add||0,'제휴카드종류':$('sCard').value,'제휴카드할부승인금액':+$('sCardAmt').value||'',
+    '할부개월':+$('bMonths').value,'개통요금제':s.A.name,'부가서비스':[...sAddon].join(', '),'2nd 번들':s2nd,'보험종류':$('sIns').value,
+    '결합종류':$('sBundle').value,'결합여부':$('sBundleYN').value,'변경요금제':s.B.name,'이전 사업자':$('sPrev').value,'가입유형':sType,
+    '중고폰반납여부':$('sUsed').value,'중고폰판매금액':+$('sUsedSell').value||'','중고폰고객지급금액':+$('sUsedPay').value||'',
+    '거래처':$('sVendor').value,'기타 지출(원)':+$('sEtcCost').value||'','정책조정 수기(원)':+$('sAdj').value||'',
+    _출고가:+$('bPrice').value||0,_method:m.name,_fee1:m.a.fee+m.dev,_fee2:m.b.fee+m.dev,_chg:fmtD(m.chg),_dev:m.dev,_principal:m.principal,_total24:m.total24,_carrier:CARRIERS[bCar]
+  };
+}
+function checkSale(p){
+  const miss=[]; if(!p['고객이름'])miss.push('고객명'); if(!p['휴대폰번호'])miss.push('휴대폰번호'); if(!p['구매기종'])miss.push('기종');
+  if(!p['거래처'])miss.push('거래처'); if(!$('sConsent').checked)miss.push('개인정보 동의');
+  return miss;
+}
+const sMsg=t=>{$('sMsg').textContent=t};
+$('sSave').onclick=async()=>{
+  const p=buildSale(); const miss=checkSale(p);
+  if(miss.length){sMsg('입력 필요: '+miss.join(', '));toast('빠진 항목이 있습니다');return}
+  if(!GAS){sMsg('판매일보 저장은 구글 시트에 연결된 상담 페이지에서 동작합니다. (이 화면은 Claude 미리보기 버전)');return}
+  $('sSave').disabled=true; sMsg('저장 중…');
+  try{
+    let r=await gas('saveSale',clean(p),false);
+    if(r&&r.dup){ if(confirm(`같은 일련번호가 ${r.row}행에 이미 있습니다. 그래도 새로 저장할까요?`)) r=await gas('saveSale',clean(p),true); else {sMsg('저장을 취소했습니다.');return} }
+    sMsg(`판매일보 ${r.row}행에 저장했습니다.`); toast('판매일보에 저장했습니다');
+  }catch(e){ sMsg('저장 실패: '+(e&&e.message||e)); }
+  finally{ $('sSave').disabled=false; }
+};
+const clean=p=>Object.fromEntries(Object.entries(p).filter(([k])=>!k.startsWith('_')));
+function stampPrint(){ const d=new Date(); const t=`${ymd(d)} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`; $('pDate').textContent='작성 '+t; $('pDate2').textContent=ymd(d); $('pCust').textContent=$('bCust').value||'        '; }
+$('sPrint').onclick=()=>{ if(!$('sConsent').checked){toast('개인정보 동의를 먼저 확인하세요');return} stampPrint(); window.print(); };
+function docHtml(p){
+  const s=buyState; const row=(k,v)=>`<tr><th>${k}</th><td>${esc(v??'')}</td></tr>`;
+  const mt=s.methods.map(m=>`<td style="vertical-align:top;border:1px solid #999;padding:8px;${m.name===p._method?'background:#E6F4F1;':''}"><b>${m.name}${m.name===p._method?' (고객 선택)':''}</b><br>
+    할부원금 ${won(m.principal)} · 월 할부금 ${won(m.dev)}<br>${fmtD(m.today)} ~ ${fmtD(m.last)}: <b>${won(m.a.fee+m.dev)}</b>/월<br>
+    ${fmtD(m.chg)}부터: <b>${won(m.b.fee+m.dev)}</b>/월<br>24개월 총 부담 ${won(m.total24)}</td>`).join('');
+  return `<html><head><meta charset="utf-8"><style>body{font-family:'Malgun Gothic',sans-serif;font-size:11pt;color:#111}h1{font-size:18pt;border-bottom:3px solid #0E8C7B;padding-bottom:4px}
+  table{border-collapse:collapse;width:100%;margin-bottom:10px}th{background:#f2f2f2;text-align:left;width:28%;border:1px solid #999;padding:5px}td{border:1px solid #999;padding:5px}.sign{border:2px solid #333;padding:10px;margin-top:12px}</style></head><body>
+  <h1>안산모바일 휴대폰 개통 상담서</h1>
+  <table>${row('작성일',ymd(new Date()))}${row('고객명',p['고객이름'])}${row('휴대폰번호',p['휴대폰번호'])}${row('생년월일',p['생년월일'])}${row('통신사 / 거래처',p._carrier+' / '+p['거래처'])}${row('가입유형 / 이전 사업자',p['가입유형']+' / '+(p['이전 사업자']||'-'))}</table>
+  <table>${row('기종',p['구매기종'])}${row('일련번호',p['일련번호'])}${row('출고가',won(p._출고가))}${row('공시/선약',p['공시/선약'])}${row('공시지원금',p['공시지원금']?won(p['공시지원금']):'-')}${row('추가지원금',won(p['추가지원금']||0))}${row('할부개월',p['할부개월']?p['할부개월']+'개월':'일시불')}</table>
+  <table>${row('개통 요금제',p['개통요금제'])}${row('변경 요금제',p['변경요금제'])}${row('요금제 변경 가능일',p._chg)}${row('부가서비스',p['부가서비스']||'-')}${row('보험',p['보험종류']||'-')}${row('2nd 번들',p['2nd 번들']||'-')}${row('결합',p['결합여부']==='Y'?p['결합종류']:'-')}${row('제휴카드',p['제휴카드종류']||'-')}${row('중고폰 반납',p['중고폰반납여부']==='Y'?'반납 (고객지급 '+won(p['중고폰고객지급금액']||0)+')':'-')}</table>
+  <table><tr>${mt}</tr></table>
+  <div class="sign">위 내용(요금제 유지기간 및 변경 가능일 포함)을 안내받고 확인하였습니다.<br><br>고객명 ${esc(p['고객이름'])} &nbsp;&nbsp; 서명 ____________________ &nbsp;&nbsp; 담당 ____________</div>
+  <p style="font-size:9pt;color:#555">안산모바일 · 고객센터 010-5508-5522 · 직통 010-8263-5588 · 월~토 10:00~19:00</p></body></html>`;
+}
+$('sPdf').onclick=async()=>{
+  const p=buildSale(); const miss=checkSale(p);
+  if(miss.length){sMsg('입력 필요: '+miss.join(', '));return}
+  if(!GAS){sMsg('드라이브 저장은 구글 시트에 연결된 상담 페이지에서 동작합니다. 지금은 "가입서류 출력"에서 PDF로 저장을 고르세요.');return}
+  $('sPdf').disabled=true; sMsg('PDF 만드는 중…');
+  try{ const name=`${p['개통일']}_${p['고객이름']}_${p['구매기종']}`.replace(/[\\/:*?"<>|]/g,'');
+    const r=await gas('savePdf',docHtml(p),name); sMsg('드라이브에 저장했습니다: '+r.path); toast('PDF를 저장했습니다'); }
+  catch(e){ sMsg('PDF 저장 실패: '+(e&&e.message||e)); } finally{ $('sPdf').disabled=false; }
+};
+// 구글 시트 모드: 시트의 단말·거래처·목록·단말관리(공시지원금)를 불러옴
+if(GAS){
+  $('devStore').textContent='구글 시트(단말관리 시트)에 저장됩니다. 모든 기기에 공유됩니다.';
+  saveDev=async function(d){
+    const body={id:d.id,name:d.name,price:+d.price||0,subsidy:d.subsidy||{SKT:{},KT:{},LGU:{}},hidden:!!d.hidden,updated:new Date().toISOString()};
+    devRemote[d.id]=body; try{ await gas('saveDevice',body); return true }catch(e){ toast('저장 실패'); return false }
+  };
+  gas('getInit').then(r=>{
+    if(r.devices&&r.devices.length) BUILTIN=r.devices.map(d=>({id:d.name,name:d.name,price:+d.price||0,subsidy:{SKT:{},KT:{},LGU:{}},builtin:true}));
+    devRemote=r.managed||{};
+    if(r.vendors&&r.vendors.length) VENDORS=r.vendors;
+    if(r.lists) Object.keys(r.lists).forEach(k=>{ if(r.lists[k].length) LISTS[k]=r.lists[k]; });
+    fillSaleLists(); renderDevList(); renderDevEdit();
+  }).catch(e=>toast('시트 정보를 불러오지 못했습니다'));
+}
+fillSaleLists();
+const _calc=calcBuy; calcBuy=function(){ _calc(); if(sMethod==='auto') renderMethodSeg(); };
+calcBuy();
+
+renderCmpLines(); renderBoard(); renderFam(); renderList(); renderAge();
+</script>
+</body>
+</html>
